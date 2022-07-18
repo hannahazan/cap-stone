@@ -107,13 +107,16 @@ const SignUp=()=>{
     }
         return(
         <div>  
+           
             <FormGroup>
                         <FormControlLabel control={<Checkbox   />} label="Association
-                        "  onChange={()=>{setCheckBox(true)}}/>
+                        "  onChange={()=>{checkBox===true?setCheckBox(false):setCheckBox(true)}}/>
             </FormGroup>
+            
            
-            {checkBox===true?     
+            {checkBox===true?   
             <ThemeProvider theme={theme}>
+              <p>{console.log(checkBox)}</p>  
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
@@ -133,7 +136,7 @@ const SignUp=()=>{
               
               <Box component="form" noValidate  sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>:
+                  <Grid item xs={12} sm={12}>
             
                     <TextField
                       autoComplete="given-name"
@@ -231,7 +234,7 @@ const SignUp=()=>{
               
               <Box component="form" noValidate  sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>:
+                  <Grid item xs={12} sm={12}>
             
                     <TextField
                       autoComplete="given-name"

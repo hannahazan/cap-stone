@@ -13,7 +13,7 @@ import Stack from '@mui/material/Stack';
 const ProfilAsso=()=>{
   
     const [uploadImg, setUploadImg] = useState({
-       imgUrl:""
+       imgName:""
       });
     
       const navigate = useNavigate();
@@ -37,7 +37,7 @@ const ProfilAsso=()=>{
       
       
     
-      await fetch("http://localhost:4000/img", {
+      await fetch("http://localhost:4000/img/:_id", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,11 +49,10 @@ const ProfilAsso=()=>{
         return;
       });
     
-     setUploadImg({imgUrl:"" });
-     var imgStock= localStorage.setItem("imgUrl","newImg.imgUrl")
-     console.log(imgStock)
+     setUploadImg({imgName:"" });
+     
 
-     console.log(newImg.imgUrl)
+     console.log(newImg.imgName)
       navigate("/profil_asso/:_id");
     }
    
@@ -63,7 +62,7 @@ const ProfilAsso=()=>{
         <div>
             <Button variant="contained" component="label">
               Upload
-              <input hidden accept="image/*" multiple type="file"  onChange={(e)=>updateImg({imgUrl: e.target.value})} />
+              <input hidden accept="image/*" multiple type="file" name="avatar" method="post" onChange={(e)=>updateImg({imgName: e.target.value})} />
             </Button>
             <IconButton color="primary" aria-label="upload picture" component="label">
                 <input hidden accept="image/*" type="file" />
