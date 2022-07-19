@@ -102,7 +102,7 @@ const SignUp=()=>{
       });
     
       setFormVlt({firstname:"",lastname:"",pseudo:"",email:"",password:"",});
-      navigate("/");
+      navigate("/profil_volunteer/:_id");
      
     }
         return(
