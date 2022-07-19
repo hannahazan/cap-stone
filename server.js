@@ -15,7 +15,7 @@ app.use(express.static('upload'))
 
 app.use('/users',routerUsers)
 app.use('/posts',routerPost)
-app.use('/img/:_id',routerImg)
+app.use('/img',routerImg)
 
 
 // connection à la bdd mongodb
