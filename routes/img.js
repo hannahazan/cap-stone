@@ -43,7 +43,7 @@ routerImg.post("/", upload.single('file'), async (req, res) => {
     let myImage = new Image({
       posterId: req.body.posterId,
       message: req.body.message,
-      picture: req.file !== null ? "client/public/data/uploads/" + req.filename : "",
+      picture: req.file !== null ? "client/public/data/uploads/" + req.file.filename : "",
       likers: [],
       comments: [],
     });

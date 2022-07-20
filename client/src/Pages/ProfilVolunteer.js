@@ -7,54 +7,34 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Stack from '@mui/material/Stack';
 
 const ProfilVolunteer=()=>{
-    const [uploadImg, setUploadImg] = useState({
-      imgName:""
-    })
-     
-       const navigate = useNavigate();
-       
-       const updateImg = (e)=>{
-        setUploadImg(e.target.file)
-       }
-       
-       
-     
-      // This function will handle the submission.
-      async function onSubmit(e) {
-       e.preventDefault();
-     
-       // When a post request is sent to the create url, we'll add a new record to the database.
-       const newImg = { ...uploadImg };
-       //const bonjour=JSON.stringify(newImg)
-       //console.log(bonjour)
-       const formData= new FormData();
+    const [uploadImg, setUploadImg] = useState([])
+    const navigate = useNavigate();
 
-       formData.append("imgName",uploadImg)
- 
-       
-       
-     
-       await fetch("http://localhost:4000/img/profile", {
-         method: "POST",
-         headers: {
-           "Content-Type": "application/json",
-         },
-         body: JSON.stringify(newImg),
-       })
-       .catch(error => {
-         window.alert(error);
-         return;
-       });
-     
-      setUploadImg({imgName:"" });
-      
- 
-      console.log(newImg._id)
-       
-     }
+    const updateImg = (event) => {
+      setUploadImg(event.target.files[0]);
+    }
+
+    // This function will handle the submission.
+    async function onSubmit(e) {
+      e.preventDefault();
+      // When a post request is sent to the create url, we'll add a new record to the database.
+      const data = new FormData();
+      const newData= data.append('file',uploadImg)
+      fetch("http://localhost:5000/img", {
+        method: "POST",
+        body: newData,
+      })
+      .then((response)=>{console.log(response.json)})
+      .catch(error => {
+        window.alert(error);
+      });
+
+    // setUploadImg("");
+
+    }
     return(
-        <form action="/profile" encType="multipart/form-data">
-            <input type="file" filename="imgName" onChange={updateImg} className="form-control-file" />
+        <form action="/" encType="multipart/form-data">
+            <input type="file" filename="file" onChange={ updateImg} className="form-control-file" />
             <button onClick={onSubmit}>submit</button>
         </form>
     )
