@@ -20,11 +20,11 @@ const imgSchema = new mongoose.Schema(
        },
        NumberOfLikes: {
            type: [Number], //pour incrementer par la suite a chaque like
-           required: true,
+          
        },
        likers: {        //toutes les personnes qui ont aimé le post,
            type: [String],  // tableau des id des utilisateurs qui ont liker le post, éviter plusieurs likes de la même personne 
-           required: true
+           
        },
        comments: {
            type: [
@@ -35,7 +35,7 @@ const imgSchema = new mongoose.Schema(
                    timestamp: Number, //permet d'afficher les commentaires selon  "la valeur la plus élevée en derniers"  
                }
            ],
-           required: true,
+           
        },
        timestamp: Number, //permet d'afficher le dernier post en tête 
    });

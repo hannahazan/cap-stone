@@ -6,11 +6,11 @@ import routerUsers from './routes/users.js';
 import routerPost from './routes/posts.js'
 import routerImg from './routes/img.js';
 const app = express()
-const port = 4000
+const port = 5000
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
-app.use(express.static('upload'))
+app.use(express.static('public'))
 
 
 app.use('/users',routerUsers)

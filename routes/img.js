@@ -38,16 +38,18 @@ routerImg.post("/", upload.single('file'), async (req, res) => {
       cb(null, file.fieldname + '-' + uniqueSuffix)
     },
   })
-  console.log(req.file, req.body)
+  //console.log("body"+  req.body)
+  
   try {
     let myImage = new Image({
       posterId: req.body.posterId,
       message: req.body.message,
       picture: req.file !== null ? "client/public/data/uploads/" + req.file.filename : "",
       likers: [],
-      comments: [],
+      comments: []
     });
     await myImage.save();
+    console.log(req.file)
     res.json({ message: "Created" });
   } catch (error) {
     res.status(400).json({ error: error.message });
