@@ -4,10 +4,11 @@ const userSchema = new mongoose.Schema({
 firstname:String,
 lastname:String,
 rna:Number,
+imgProfilUrl:String,
+imgProfilName:String,
 pseudo:String,
 email:String,
 password:String,
-img:String,
 isAssociation:Boolean,
 })
 
