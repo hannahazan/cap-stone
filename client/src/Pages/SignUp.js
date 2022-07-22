@@ -1,28 +1,13 @@
 
+import FormAsso from "../components/FormAsso";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import "../style/index.scss";
 
 
-
-const theme = createTheme();
-
-
-const SignUp=()=>{
-    const [checkBox,setCheckBox]= useState(false)
+// import Form from "../components/Form";
+export default function Signup() {
+  const [checkBox,setCheckBox]= useState(false)
     const [formAsso, setFormAsso] = useState({
         rna:"",
         pseudo:"",
@@ -48,7 +33,7 @@ const SignUp=()=>{
       console.log(newAsso)
       
     
-      await fetch("http://localhost:4000/users", {
+      await fetch("http://localhost:5000/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +47,7 @@ const SignUp=()=>{
       });
     
       setFormAsso({pseudo:"", rna:"" , email:"" });
-      navigate("/");
+      navigate("/profil_asso/:_id");
     }
     
     const [formVlt, setFormVlt] = useState({
@@ -89,7 +74,7 @@ const SignUp=()=>{
       const newVlt = { ...formVlt };
       
     
-      await fetch("http://localhost:4000/users", {
+      await fetch("http://localhost:5000/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,225 +90,59 @@ const SignUp=()=>{
       navigate("/profil_volunteer/:_id");
      
     }
-        return(
-        <div>  
-           
-            <FormGroup>
-                        <FormControlLabel control={<Checkbox   />} label="Association
-                        "  onChange={()=>{checkBox===true?setCheckBox(false):setCheckBox(true)}}/>
-            </FormGroup>
-            
-           
-            {checkBox===true?   
-            <ThemeProvider theme={theme}>
-              <p>{console.log(checkBox)}</p>  
-          <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <Box
-              sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign up
-              </Typography>
-              
-              <Box component="form" noValidate  sx={{ mt: 3 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={12}>
-            
-                    <TextField
-                      autoComplete="given-name"
-                      name="pseudo"
-                      required
-                      fullWidth
-                      id="pseudo"
-                      label="pseudo"
-                      autoFocus
-                      onChange={(e)=>updateFormAsso({pseudo: e.target.value})}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="email"
-                      label="Email Address"
-                      name="email"
-                      autoComplete="email"
-                      onChange={(e)=>updateFormAsso({email: e.target.value})}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="rna"
-                      label="rna"
-                      name="rna"
-                      autoComplete="rna"
-                      onChange={(e)=>updateFormAsso({rna: e.target.value})}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="password"
-                      label="password"
-                      name="password"
-                      autoComplete="password"
-                      onChange={(e)=>updateFormAsso({password: e.target.value})}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox value="allowExtraEmails" color="primary" />}
-                      label="I want to receive inspiration, marketing promotions and updates via email."
-                    />
-                  </Grid>
-                </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  onClick={onSubmit}
-                >
-                 <Link href="/a" variant="body2">
-                      Sign Up
-                 </Link>
-                </Button>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-                    <Link href="/SignUp" variant="body2">
-                      Already have an account? Sign in
-                    </Link>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Box>
-          </Container>
-        </ThemeProvider>
-        
-        :
-        
-        <ThemeProvider theme={theme}>
-          <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <Box
-              sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign up
-              </Typography>
-              
-              <Box component="form" noValidate  sx={{ mt: 3 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={12}>
-            
-                    <TextField
-                      autoComplete="given-name"
-                      name="firstname"
-                      required
-                      fullWidth
-                      id="firstname"
-                      label="firstname"
-                      autoFocus
-                      onChange={(e)=>updateFormVlt({firstname: e.target.value})}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="lastname"
-                      label="lastname"
-                      name="lastname"
-                      autoComplete="lastname"
-                      onChange={(e)=>updateFormVlt({lastname: e.target.value})}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="pseudo"
-                      label="pseudo"
-                      name="pseudo"
-                      autoComplete="pseudo"
-                      onChange={(e)=>updateFormVlt({pseudo: e.target.value})}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="email"
-                      label="email"
-                      name="email"
-                      autoComplete="email"
-                      onChange={(e)=>updateFormVlt({email: e.target.value})}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="password"
-                      label="password"
-                      name="password"
-                      autoComplete="password"
-                      onChange={(e)=>updateFormVlt({password: e.target.value})}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox value="allowExtraEmails" color="primary" />}
-                      label="I want to receive inspiration, marketing promotions and updates via email."
-                    />
-                  </Grid>
-                </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  onClick={onSubmitVlt}
-                >
-                 <Link href="/a" variant="body2">
-                      Sign Up
-                 </Link>
-                </Button>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-                    <Link href="/SignUp" variant="body2">
-                      Already have an account? Sign in
-                    </Link>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Box>
-          </Container>
-        </ThemeProvider>
-            }     
-        </div>
-        )
-    
-}
+  return (
+    <main className="main-signup">
+      <header>
+        <h1>CharyDeep</h1>
+        {/* <img src={logo} alt="Logo" /> */}
+      </header>
+      <div className="form-main">
+        <div className="form-title">
+          <p>
+            Bienvenue chez <span>CharyDeep</span>
+          </p>
+          <p>Connectez-vous</p>
+          <label>
+          <input type="checkbox" onChange={()=>{checkBox===true?setCheckBox(false):setCheckBox(true)}}/>
+          association
+          </label>
+          {checkBox===true?
+          <form className="form-container">
+            <input type="email" email="email" placeholder="Adresse email"  onChange={(e)=>updateFormAsso({email: e.target.value})}  />
+            <input type="email" name="name" placeholder="Numéro RNA"  onChange={(e)=>updateFormAsso({rna: e.target.value})} />
 
-export default SignUp
+            <input type="text" name="pseudo" placeholder="pseudo"onChange={(e)=>updateFormAsso({pseudo: e.target.value})} />
+            <input type="password" name="password" placeholder="Mot de passe" onChange={(e)=>updateFormAsso({password: e.target.value})} />
+              <button
+                className="asso-btn"
+                type="submit"
+                form="nameform"
+                value="Submit"
+                onClick={onSubmit}
+              >
+                Bienvenue sur CharyDeep
+             </button>
+          </form>
+          :
+          <form className="form-container">
+            <input type="email" email="email" placeholder="Adresse email"  onChange={(e)=>updateFormVlt({email: e.target.value})}  />
+            <input type="email" name="name" placeholder="firstname"  onChange={(e)=>updateFormVlt({firstname: e.target.value})} />
+            <input type="email" name="name" placeholder="lastname"  onChange={(e)=>updateFormVlt({lastname: e.target.value})} />
+            <input type="text" name="pseudo" placeholder="pseudo"onChange={(e)=>updateFormAsso({pseudo: e.target.value})} />
+            <input type="password" name="password" placeholder="Mot de passe" onChange={(e)=>updateFormVlt({password: e.target.value})} />
+              <button
+                className="asso-btn"
+                type="submit"
+                form="nameform"
+                value="Submit"
+                onClick={onSubmitVlt}
+              >
+                Bienvenue sur CharyDeep
+             </button>
+          </form>
+          }
+        </div>
+      </div>
+    </main>
+  );
+}

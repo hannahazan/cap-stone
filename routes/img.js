@@ -19,8 +19,8 @@ routerImg.get('/', function (req, res) {
 })
 
 // **getOnePost**/////////////////////////////////////////////////////
-routerImg.get('/:_id', function (req, res) {
-  Image.findOne({ _id: req.params._id }, (err, data) => {
+routerImg.get('/:pictureName', function (req, res) {
+  Image.findOne({ pictureName: req.params.pictureName }, (err, data) => {
     res.send(data)
   }
   )
@@ -42,14 +42,16 @@ routerImg.post("/", upload.single('file'), async (req, res) => {
   
   try {
     let myImage = new Image({
-      posterId: req.body.posterId,
+      title: req.body.title,
       message: req.body.message,
-      picture: req.file !== null ? "client/public/data/uploads/" + req.file.filename : "",
+      pictureUrl: req.file !== null ? "/data/uploads/" + req.file.filename : "",
+      pictureName:req.file.originalname,
       likers: [],
       comments: []
     });
     await myImage.save();
     console.log(req.file)
+    console.log(req.body)
     res.json({ message: "Created" });
   } catch (error) {
     res.status(400).json({ error: error.message });

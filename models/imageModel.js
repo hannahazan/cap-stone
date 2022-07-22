@@ -12,8 +12,11 @@ const imgSchema = new mongoose.Schema(
        message: {     // le post de l'assosiation
            type: String,
        },
-       picture: {     // le post de l'assosiation
+       pictureUrl :{     // le post de l'assosiation
            type: String,
+       },
+       pictureName: {     // le post de l'assosiation
+        type: String,
        },
        video: {     // le post de l'assosiation
            type: String,
