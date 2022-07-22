@@ -32,10 +32,12 @@ const AddEvenement=()=>{
 
 
     const [uploadImg, setUploadImg] = useState()
-    const [info,setinfo]= useState({
-        title:"defaultTitle"
+    const [title,setTitle]= useState({
+        title:"",
     })
-    
+    const[message,setMessage]=useState({
+      message:""
+    })
     
     const navigate = useNavigate();
 
@@ -49,14 +51,16 @@ const AddEvenement=()=>{
     async function onSubmit(e) {
       e.preventDefault();
       // When a post request is sent to the create url, we'll add a new record to the database.
+      
       const data = new FormData();
       data.append('name','josephine')
       data.append('file',uploadImg)
-      data.append('title',info.title)
-      const storage = localStorage.setItem("name",uploadImg.name)
-      console.log(uploadImg)
-      const showStorage=localStorage.getItem("name")
-      console.log(showStorage)
+      data.append('title',title.title)
+      data.append('message',message.message)
+     
+      const IdImg = localStorage.setItem("name",uploadImg.name)
+      const titleImg= localStorage.setItem("title",title.title)
+      const bodyImg= localStorage.setItem("message",message.message)
       
       for (var value of data.values()) {
         console.log(value);
@@ -84,7 +88,7 @@ const AddEvenement=()=>{
        console.log(error);
       });
       
-
+     
     // setUploadImg("");
      navigate("/profil_asso/:_id/add_evenement")
     }
@@ -92,6 +96,8 @@ const AddEvenement=()=>{
         <div>
         <form action="/" encType="multipart/form-data">
             <input type="file" name="file" onChange={ updateImg} className="form-control-file" />
+            <input type="text" name="title" onChange={(e)=>{setTitle({title:e.target.value})}} placeholder="title" />
+            <input type="text" name="message" onChange={(e)=>{setMessage({message:e.target.value})}} placeholder="message" />
             <button type="submit" onClick={onSubmit}>submit</button> 
         </form>
         <img src={process.env.PUBLIC_URL + '/data/uploads/30f252e4d0bf27e9d3efc51d8baa56f7'} ></img>

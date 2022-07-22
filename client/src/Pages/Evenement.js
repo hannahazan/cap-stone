@@ -2,10 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 const Evenement=()=>{
     const [users, setUsers] = useState([]);
-    const storage = localStorage.getItem('name')
+    const idImg = localStorage.getItem('name')
+    const titleImg=localStorage.getItem('title')
+    const messageImg=localStorage.getItem('message')
     const getUser = () => {
         return axios
-          .get(`http://localhost:5000/img/${storage}`)
+          .get(`http://localhost:5000/img/${idImg}`)
           .then((res) => {
             console.log(setUsers(res.data.pictureUrl))
             ;
@@ -19,8 +21,9 @@ const Evenement=()=>{
     
     return(
        <div>
-       <p>{storage}</p>
+       <p>{titleImg}</p>
        <img src={process.env.PUBLIC_URL + users} ></img>
+       <p>{messageImg}</p>
        </div>
     )
 }
