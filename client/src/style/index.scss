@@ -290,16 +290,14 @@ main {
         }
 
         button.form-btn {
-            width: 90px;
-            width: 141px;
-            height: 53px;
             height: 40px;
+            width: 140px;
+            border-radius: 20px;
             border: none;
-            border-radius: 10px;
-            font-size: $poppins;
-            font-size: 1rem;
-            font-weight: 800;
-            margin-top: 1rem;
+            background-color: #8e53a4;
+            font-family: "Paytone One", sans-serif;
+            box-shadow: 2px 2px 2px 2px rgb(0 0 255 / 20%);
+            color: white;
             align-self: center;
         }
     }

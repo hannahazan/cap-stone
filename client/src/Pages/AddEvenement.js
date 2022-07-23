@@ -12,22 +12,7 @@ import Stack from "@mui/material/Stack";
 const AddEvenement=()=>{
   
   //const { user, login,changeUser } = useContext(UserContext);
-  const [Img, setImg] = useState([]);
-  //temporaire, pour accès aux données
- /* const getImg = () => {
-    return axios
-      .get("http://localhost:5000/img")
-      .then((res) => {
-        setImg(res.data);
-      })
-      .catch((err) => console.error(err));
-  };
-
-  useEffect(() => {
-    getImg();
-  }, []);*/
-
-
+    const [Img, setImg] = useState([]);
     const [uploadImg, setUploadImg] = useState()
     const [title,setTitle]= useState({
         title:"",
@@ -63,16 +48,6 @@ const AddEvenement=()=>{
         console.log(value);
      }
       
-     
-    /*   
-      fetch("http://localhost:5000/img", {
-        method: "POST",
-       headers: ({
-          
-        }),
-        
-        body:
-      }) */
       const config = {
         headers: {
           'content-type': 'multipart/form-data'
@@ -100,8 +75,8 @@ const AddEvenement=()=>{
         <img src={process.env.PUBLIC_URL + '/data/uploads/30f252e4d0bf27e9d3efc51d8baa56f7'} ></img>
         </div>*/
         <div className="events-container">
-      <div className="events-header">
-        <img className="img-logo" src={logo} alt="Logo" />
+      <div className="events-header" style={{alignSelf:"center"}}>
+        <img className="img-logo" src={logo} alt="Logo"  />
       </div>
       <div className="event-form-container">
         

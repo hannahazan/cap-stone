@@ -85,7 +85,6 @@ export default function Signup() {
     });
     
    
-  // setUploadImg("");
    navigate("/")
   } 
    
@@ -122,9 +121,7 @@ export default function Signup() {
      console.log(error);
     });
     
-   
-  // setUploadImg("");
-   navigate("/signUp")
+   navigate("/")
     
   }   
   return (
