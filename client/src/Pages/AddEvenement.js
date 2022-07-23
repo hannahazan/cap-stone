@@ -7,11 +7,14 @@ import axios from 'axios'
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
+import mongoose from "mongoose";
 
 
 const AddEvenement=()=>{
   
   //const { user, login,changeUser } = useContext(UserContext);
+    const pseudo=localStorage.getItem('pseudo')
+    const [user,setUser]=useState([])
     const [Img, setImg] = useState([]);
     const [uploadImg, setUploadImg] = useState()
     const [title,setTitle]= useState({
@@ -20,6 +23,25 @@ const AddEvenement=()=>{
     const[message,setMessage]=useState({
       message:""
     })
+   
+    const getUser=()=>{
+      return axios
+      .get(`http://localhost:5000/users/${pseudo}`)
+      .then((res) => {
+        console.log(setUser(res.data))
+       
+        ;
+      })
+      .catch((err) => console.error(err));
+  };
+    
+      useEffect(() => {
+        getUser();
+      }, []);
+
+
+   
+  
     
     const navigate = useNavigate();
 
@@ -39,6 +61,9 @@ const AddEvenement=()=>{
       data.append('file',uploadImg)
       data.append('title',title.title)
       data.append('message',message.message)
+      data.append('userPseudo',user.pseudo)
+      data.append('userEmail',user.email)
+      data.append('userPicture',user.imgProfilUrl)
      
       const IdImg = localStorage.setItem("name",uploadImg.name)
       const titleImg= localStorage.setItem("title",title.title)
@@ -62,7 +87,7 @@ const AddEvenement=()=>{
       
      
     // setUploadImg("");
-     navigate("/profil_asso/:_id/evenement")
+     navigate("/")
     }
     return(
        /*<div>
@@ -74,14 +99,16 @@ const AddEvenement=()=>{
         </form>
         <img src={process.env.PUBLIC_URL + '/data/uploads/30f252e4d0bf27e9d3efc51d8baa56f7'} ></img>
         </div>*/
+        
         <div className="events-container">
-      <div className="events-header" style={{alignSelf:"center"}}>
+      <div className="events-header" >
         <img className="img-logo" src={logo} alt="Logo"  />
       </div>
       <div className="event-form-container">
         
         <form>
         <h1>Créer votre évènement</h1>
+        <p>{pseudo}</p>
           <label className="form-container" for="mytitle">
             Le titre
             <input type="text" onChange={(e)=>{setTitle({title:e.target.value})}}></input>

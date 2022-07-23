@@ -6,6 +6,7 @@ routerImg.use(express.json());
 routerImg.use(express.urlencoded({extended: true}))
 import Image from '../models/imageModel.js'
 
+
 const upload = multer({ dest: 'client/public/data/uploads' })
 import tmp from 'tmp'
 
@@ -19,12 +20,23 @@ routerImg.get('/', function (req, res) {
 })
 
 // **getOnePost**/////////////////////////////////////////////////////
+/*routerImg.get('/:pictureUrl', function (req, res) {
+  Image.
+  findOne({ pictureName: req.params.pictureName }).
+  populate('userPseudo').
+  exec(function (err, images) {
+    if (err) return handleError(err);
+    console.log('The author is %s', images.userPseudo.firstname);
+    // prints "The author is Ian Fleming"
+  })
+});*/
 routerImg.get('/:pictureName', function (req, res) {
   Image.findOne({ pictureName: req.params.pictureName }, (err, data) => {
     res.send(data)
   }
   )
 });
+
 
 
 // **CreatePost**/////////////////////////////////////////////////////
@@ -47,7 +59,10 @@ routerImg.post("/", upload.single('file'), async (req, res) => {
       pictureUrl: req.file !== null ? "/data/uploads/" + req.file.filename : "",
       pictureName:req.file.originalname,
       likers: [],
-      comments: []
+      comments: [],
+      userPseudo:req.body.userpseudo,
+      userEmail:req.body.userEmail,
+      userPicture:req.body.userPicture,
     });
     await myImage.save();
     console.log(req.file)

@@ -2,10 +2,6 @@ import mongoose from 'mongoose';
 
 const imgSchema = new mongoose.Schema(
    {
-       posterPseudo: {     // le post de l'assosiation
-           type: String,
-           
-       },
        title: {     
            type: String,
        },
@@ -40,6 +36,10 @@ const imgSchema = new mongoose.Schema(
            ],
            
        },
+       userPseudo:String,
+       userEmail:String,
+       userPicture:String,
+
        timestamp: Number, //permet d'afficher le dernier post en tête 
    });
 

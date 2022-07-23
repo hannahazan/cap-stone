@@ -15,7 +15,7 @@ const ProfilAsso=()=>{
     const [uploadImg, setUploadImg] = useState({
        imgName:""
       });
-    
+      const nameImg=localStorage.getItem('name')
       const navigate = useNavigate();
       function updateImg(value) {
         return setUploadImg((prev) => {
@@ -60,6 +60,7 @@ const ProfilAsso=()=>{
     
     return(
         <div>
+          <p>{nameImg}</p>
             <Button variant="contained" component="label">
               Upload
               <input hidden accept="image/*" multiple type="file" name="avatar" method="post" onChange={(e)=>updateImg({imgName: e.target.value})} />

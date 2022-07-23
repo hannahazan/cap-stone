@@ -3,8 +3,6 @@ import {Link} from 'react-router-dom'
 import { useNavigate } from "react-router";
 import axios from "axios";
 import React, { useEffect, useState,} from "react";
-
-
 import logo from "../img/CharyDeep_logo.png"
 
 export default function SignIn() {
