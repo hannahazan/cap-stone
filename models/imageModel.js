@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const imgSchema = new mongoose.Schema(
    {
-       posterId: {     // le post de l'assosiation
+       posterPseudo: {     // le post de l'assosiation
            type: String,
            
        },

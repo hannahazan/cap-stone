@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import axios from 'axios'
 import { useNavigate } from "react-router";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -26,8 +27,32 @@ const darkTheme = createTheme({
 function HomePage() {
    
     const [checkBox,setCheckBox]= useState(false)
+    const [FromSignUp,setFromSignUp]=useState(false)
+    const [url,setUrl]=useState()
+    const test = localStorage.getItem('pseudo')
+    const imgUrl=localStorage.getItem('imgUrl')
+    const getUrl = () => {
+      return axios
+        .get(`http://localhost:5000/users/${test}`)
+        .then((res) => {
+          console.log(setUrl(res.data.imgProfilUrl))
+          setFromSignUp(true)
+          ;
+        })
+        .catch((err) => console.error(err));
+    };
+  
+    useEffect(() => {
+      getUrl();
+    }, []);
   return (
     <div>
+      <p>{test}</p>
+      { FromSignUp===false?
+      <img src={process.env.PUBLIC_URL + imgUrl} ></img>
+      :
+      <img src={process.env.PUBLIC_URL + url} ></img>
+      }
     <FormGroup>
             <FormControlLabel control={<Checkbox   />} label="darkMode
             "  onChange={()=>{checkBox===true?setCheckBox(false):setCheckBox(true)}}/>

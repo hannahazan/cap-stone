@@ -5,6 +5,9 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios'
 import { useNavigate } from "react-router";
 import {Link} from 'react-router-dom'
+import IconButton from "@mui/material/IconButton";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import Stack from "@mui/material/Stack"
 import "../style/index.scss";
 
 
@@ -61,7 +64,7 @@ export default function Signup() {
     data.append('email',formVltMail.email)
     data.append('password',formVltPassword.password)
    
-    const IdImg = localStorage.setItem("nameImgProfile",imgProfile.name)
+    const IdImg = localStorage.setItem("imgName",imgProfile.name)
     const userPseudo= localStorage.setItem("pseudo",formVltPseudo.pseudo)
     
     for (var value of data.values()) {
@@ -100,6 +103,7 @@ export default function Signup() {
    
     const IdImg = localStorage.setItem("nameImgProfile",imgProfile.name)
     const userPseudo= localStorage.setItem("pseudo",formAssoPseudo.pseudo)
+    
     
     for (var value of data.values()) {
       console.log(value);
@@ -140,7 +144,18 @@ export default function Signup() {
           </label>
           {checkBox===true?
           <form className="form-container" action="/" encType="multipart/form-data">
-            <input type="file" name="file" onChange={ updateImgProfile} className="form-control-file" />
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <IconButton
+              sx={{color:'purple'}}
+
+                aria-label="upload picture"
+                component="label"
+                size="large"
+              >
+                <input hidden accept="image/*" type="file" onChange={ updateImgProfile} />
+                <PhotoCamera />
+              </IconButton>
+            </Stack>
             <input type="email" email="email" placeholder="Adresse email"  onChange={(e)=>setFormAssoMail({email: e.target.value})}  />
             <input type="email" name="name" placeholder="Numéro RNA"  onChange={(e)=>setFormAssoRna({rna: e.target.value})} />
             <input type="text" name="pseudo" placeholder="pseudo"onChange={(e)=>setFormAssoPseudo({pseudo: e.target.value})} />

@@ -1,10 +1,41 @@
 import "../style/index.scss";
 import {Link} from 'react-router-dom'
+import { useNavigate } from "react-router";
+import axios from "axios";
+import React, { useEffect, useState,} from "react";
 
 
 // import logo from "../assets/img/CharyDeep_logo.png"
 
 export default function SignIn() {
+    const [getPseudo,setGetPseudo]=useState()
+    const [getPassword,setGetPassword]=useState()
+    const [user,setGetUser]=useState([])
+    const getUser = () => {
+        return axios
+          .get(`http://localhost:5000/users/${getPseudo}`)
+          .then((res) => {
+            console.log(setGetUser(res.data))
+            localStorage.setItem('pseudo',user.pseudo)
+            localStorage.setItem('imgUrl',user.imgProfilUrl)
+            navigateLog()
+          })
+          .catch((err) => console.error(err));
+      };
+      const navigate = useNavigate()
+      
+    
+      const navigateLog=() => {
+        if(getPseudo===user.pseudo && getPassword===user.password){
+          console.log("hello")
+          navigate("/")
+         }
+        }
+
+        const handleSubmit=(e) => {
+            e.preventDefault()
+              getUser();  
+            }
   return (
     <main className="signin-main">
       <header>
@@ -23,10 +54,10 @@ export default function SignIn() {
                 email="email"
                 placeholder="Connectez-vous avec google"
             />
-            <input type="email" name="name" placeholder="Nom utilisateur ou email" />
+            <input type="email" name="name" placeholder="pseudo ou email" onChange={(e)=>setGetPseudo(e.target.value)} />
 
-            <input type="password" name="password" placeholder="Mot de passe" />
-            <button type="submit" form="nameform" value="Submit">
+            <input type="password" name="password" placeholder="Mot de passe" onChange={(e)=>setGetPassword(e.target.value)} />
+            <button type="submit" form="nameform" value="Submit" onClick={handleSubmit}>
                 Connectez-vous
             </button>
             <Link to="/signUp"className="no-account">Pas de compte ? Inscrivez-vous</Link>

@@ -35,7 +35,7 @@ routerUser.post("/", upload.single('file'), async (req, res) => {
       imgProfilName:req.file.originalname,
       pseudo:req.body.pseudo,
       email:req.body.email,
-      password:req.body.string,    
+      password:req.body.password,    
     });
     await myUser.save();
     console.log(req.file)
@@ -46,9 +46,9 @@ routerUser.post("/", upload.single('file'), async (req, res) => {
   }
 });
 
-routerUser.get('/:imgProfilName', function(req, res){
+routerUser.get('/:pseudo', function(req, res){
     
-    User.findOne({_id: req.params._id}, (err,data)=>
+    User.findOne({pseudo: req.params.pseudo}, (err,data)=>
     { 
       res.send(data)  
        }

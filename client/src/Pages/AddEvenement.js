@@ -90,7 +90,7 @@ const AddEvenement=()=>{
       
      
     // setUploadImg("");
-     navigate("/profil_asso/:_id/add_evenement")
+     navigate("/profil_asso/:_id/evenement")
     }
     return(
         <div>
