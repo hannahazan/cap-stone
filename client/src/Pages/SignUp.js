@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack"
 import "../style/index.scss";
+import logo from "../img/CharyDeep_logo.png"
 
 
 // import Form from "../components/Form";
@@ -129,8 +130,7 @@ export default function Signup() {
   return (
     <main className="main-signup">
       <header>
-        <h1>CharyDeep</h1>
-        {/* <img src={logo} alt="Logo" /> */}
+      <img src={logo} style={{height:"100px",marginTop:"14px" }}alt="Logo" />
       </header>
       <div className="form-main">
         <div className="form-title">
@@ -140,7 +140,7 @@ export default function Signup() {
           <p>inscrivez-vous</p>
           <label>
           <input type="checkbox" onChange={()=>{checkBox===true?setCheckBox(false):setCheckBox(true)}}/>
-          association
+           association
           </label>
           {checkBox===true?
           <form className="form-container" action="/" encType="multipart/form-data">
@@ -156,6 +156,7 @@ export default function Signup() {
                 <PhotoCamera />
               </IconButton>
             </Stack>
+            <p>votre photo</p>
             <input type="email" email="email" placeholder="Adresse email"  onChange={(e)=>setFormAssoMail({email: e.target.value})}  />
             <input type="email" name="name" placeholder="Numéro RNA"  onChange={(e)=>setFormAssoRna({rna: e.target.value})} />
             <input type="text" name="pseudo" placeholder="pseudo"onChange={(e)=>setFormAssoPseudo({pseudo: e.target.value})} />
@@ -173,7 +174,20 @@ export default function Signup() {
           </form>
           :
           <form className="form-container" action="/" encType="multipart/form-data">
-            <input type="file" name="file" onChange={ updateImgProfile} className="form-control-file" />
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <IconButton
+              sx={{color:'purple'}}
+
+                aria-label="upload picture"
+                component="label"
+                size="large"
+              >
+                <input hidden accept="image/*" type="file" onChange={ updateImgProfile} />
+                <PhotoCamera />
+              </IconButton>
+            </Stack>
+            <p>votre photo</p>
+           
             <input type="email" email="email" placeholder="Adresse email"  onChange={(e)=>setFormVltMail({email: e.target.value})}  />
             <input type="email" name="name" placeholder="firstname"  onChange={(e)=>setFormVltFirstname({firstname: e.target.value})} />
             <input type="email" name="name" placeholder="lastname"  onChange={(e)=>setFormVltLastname({lastname: e.target.value})} />
