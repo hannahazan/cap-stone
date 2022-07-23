@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 //import { UserContext } from "../userContext.js";
 import axios from 'axios'
 import { useNavigate } from "react-router";
+import {Link} from 'react-router-dom'
 import "../style/index.scss";
 
 
@@ -81,7 +82,7 @@ export default function Signup() {
     
    
   // setUploadImg("");
-   navigate("/signUp")
+   navigate("/")
   } 
    
   
@@ -132,7 +133,7 @@ export default function Signup() {
           <p>
             Bienvenue chez <span>CharyDeep</span>
           </p>
-          <p>Connectez-vous</p>
+          <p>inscrivez-vous</p>
           <label>
           <input type="checkbox" onChange={()=>{checkBox===true?setCheckBox(false):setCheckBox(true)}}/>
           association
@@ -153,6 +154,7 @@ export default function Signup() {
               >
                 Bienvenue sur CharyDeep
              </button>
+             <Link to="/signIn"className="no-account">vous avez déjà un compte ? connectez-vous</Link>
           </form>
           :
           <form className="form-container" action="/" encType="multipart/form-data">
@@ -171,6 +173,7 @@ export default function Signup() {
               >
                 Bienvenue sur CharyDeep
              </button>
+             <Link to="/signIn"className="no-account">vous avez déjà un compte ? connectez-vous</Link>
           </form>
           }
         </div>
