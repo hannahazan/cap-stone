@@ -64,6 +64,7 @@ export default function Signup() {
     data.append('pseudo',formVltPseudo.pseudo)
     data.append('email',formVltMail.email)
     data.append('password',formVltPassword.password)
+    data.append('isAssociation',false)
    
     const IdImg = localStorage.setItem("imgName",imgProfile.name)
     const userPseudo= localStorage.setItem("pseudo",formVltPseudo.pseudo)
@@ -85,7 +86,7 @@ export default function Signup() {
     });
     
    
-   navigate("/")
+   navigate("/profil_asso/:_id/add_evenement")
   } 
    
   
@@ -100,6 +101,7 @@ export default function Signup() {
     data.append('email',formAssoMail.email)
     data.append('rna',formAssoRna.rna)
     data.append('password',formAssoPassword.password)
+    data.append('isAssociation',true)
    
     const IdImg = localStorage.setItem("nameImgProfile",imgProfile.name)
     const userPseudo= localStorage.setItem("pseudo",formAssoPseudo.pseudo)
@@ -121,7 +123,7 @@ export default function Signup() {
      console.log(error);
     });
     
-   navigate("/")
+   navigate("/profil_asso/:_id/add_evenement")
     
   }   
   return (
@@ -156,7 +158,7 @@ export default function Signup() {
             <p>votre photo</p>
             <input type="email" email="email" placeholder="Adresse email"  onChange={(e)=>setFormAssoMail({email: e.target.value})}  />
             <input type="email" name="name" placeholder="Numéro RNA"  onChange={(e)=>setFormAssoRna({rna: e.target.value})} />
-            <input type="text" name="pseudo" placeholder="pseudo"onChange={(e)=>setFormAssoPseudo({pseudo: e.target.value})} />
+            <input type="text" name="pseudo" placeholder="Association Name"onChange={(e)=>setFormAssoPseudo({pseudo: e.target.value})} />
             <input type="password" name="password" placeholder="Mot de passe" onChange={(e)=>setFormAssoPassword({password: e.target.value})} />
               <button
                 className="asso-btn"
@@ -167,7 +169,7 @@ export default function Signup() {
               >
                 Bienvenue sur CharyDeep
              </button>
-             <Link to="/signIn"className="no-account">vous avez déjà un compte ? connectez-vous</Link>
+             <Link to="/"className="no-account">vous avez déjà un compte ? connectez-vous</Link>
           </form>
           :
           <form className="form-container" action="/" encType="multipart/form-data">
@@ -199,7 +201,7 @@ export default function Signup() {
               >
                 Bienvenue sur CharyDeep
              </button>
-             <Link to="/signIn"className="no-account">vous avez déjà un compte ? connectez-vous</Link>
+             <Link to="/"className="no-account">vous avez déjà un compte ? connectez-vous</Link>
           </form>
           }
         </div>

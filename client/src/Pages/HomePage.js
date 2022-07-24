@@ -30,9 +30,22 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {  CardActionArea, getDialogContentTextUtilityClass } from '@mui/material';
+import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
+import Modal from '@mui/material/Modal';
 import { get } from "mongoose";
 
-
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 300,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 const theme = createTheme();
 const darkTheme = createTheme({
@@ -45,25 +58,67 @@ function HomePage() {
     const [checkBox,setCheckBox]= useState(false)
     const [FromSignUp,setFromSignUp]=useState(false)
     const [url,setUrl]=useState([])
-    const [users,setUsers]=useState()
+    const [user,setUser]=useState([])
+    const [upgradeComment,setUpgradeComment]=useState({})
+    const [upgradeLike,setUpgradelike]=useState()
+    const [post, setPost] = React.useState(null);
+    const [comment,setComment]=useState()
+    const[onePost,setOnePost]=useState([])
+    const [open, setOpen] = React.useState(false);
     const test = localStorage.getItem('pseudo')
     const nameImg=localStorage.getItem('name')
     const imgUrl=localStorage.getItem('imgUrl')
+
+    const navigate=useNavigate()
     const getUrl = () => {
       return axios
         .get("http://localhost:5000/img")
         .then((res) => {
           console.log(setUrl(res.data))
-          setFromSignUp(true)
+          
+          ;
+        })
+        .catch((err) => console.error(err));
+    };
+    const getUser = () => {
+      return axios
+        .get(`http://localhost:5000/users/${test}`)
+        .then((res) => {
+          console.log(setUser(res.data))
           ;
         })
         .catch((err) => console.error(err));
     };
 
-  
-    useEffect(() => {
+    
+     useEffect(() => {
       getUrl();
+      getUser()
+      
     },[] );
+
+    const onSubmit=()=>{
+      var canUse=[]
+        console.log(upgradeComment.commentsOnePost[0])
+        canUse.push(comment)  
+        for(let i=0;i<upgradeComment.commentsOnePost.length;i++){
+          canUse.push(upgradeComment.commentsOnePost[i])
+        }
+        for(let j=0;j<canUse.length;j++){
+          console.log(canUse[j])
+        }
+        
+        return axios
+          .put(`http://localhost:5000/img/${upgradeComment.imgOnePost}`,{comments:canUse})
+          .then((response) => {
+            console.log(setPost(response.data))
+
+            ;
+          })
+          .catch((err) => console.error(err));
+
+      
+    }
 
     const ExpandMore = styled((props) => {
       const { expand, ...other } = props;
@@ -80,6 +135,10 @@ function HomePage() {
     const handleExpandClick = () => {
       setExpanded(!expanded);
     };
+    const handleOpen = () => {setOpen(true)
+    };
+    const handleClose = () => setOpen(false);
+    
   return (
     
     <div>
@@ -109,8 +168,8 @@ function HomePage() {
       </main>
     </ThemeProvider>
     */}
-    <p>{nameImg}</p>
      {url.map((img)=>{
+      if(img.isAssociation===true){
       return(
      <Card sx={{ maxWidth: 370, /*maxHeight:300*/ }}>
       <CardHeader
@@ -143,11 +202,41 @@ function HomePage() {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+          <FavoriteIcon  />
         </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
+        <button style={{border:"none",background:"none"}} onClick={()=>{setUpgradeComment({imgOnePost:img.pictureName,
+        commentsOnePost:img.comments, likeOnePost:img.like
+        })}}>
+          <IconButton aria-label="share" onClick={handleOpen}>
+            <ChatBubbleOutlineRoundedIcon />
+          </IconButton>
+        </button>
+        <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Box
+            component="form"
+            sx={{
+              '& > :not(style)': { m: 1, width: '25ch' },
+            }}
+            noValidate
+            autoComplete="off"
+            >
+              <TextField
+                id="outlined-uncontrolled"
+                label="your comment"
+                defaultValue="foo"
+                color="secondary"
+                onChange={(e)=>{setComment(e.target.value)}}
+              />
+               <Button variant="contained" color="secondary" onClick={onSubmit}>submit</Button>
+          </Box>
+        </Box>
+        </Modal>
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -159,19 +248,24 @@ function HomePage() {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-          </Typography>
-          <Typography paragraph>
-          </Typography>
-          <Typography paragraph>
-          </Typography>
+          <Typography paragraph>{img.message}</Typography>
+          <Typography paragraph>comments:</Typography>
+          {img.comments.map(comment=>{
+            return(
+              <div>
+              <Typography paragraph>{comment}</Typography>
+              </div>
+            )
+          }) 
+          }
           <Typography>
           </Typography>
         </CardContent>
       </Collapse>
     </Card>
-    )})}
+    )}
+    else(console.log("not an association"))
+    })}
     </div>
     
   );

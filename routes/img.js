@@ -59,11 +59,11 @@ routerImg.post("/", upload.single('file'), async (req, res) => {
       pictureUrl: req.file !== null ? "/data/uploads/" + req.file.filename : "",
       pictureName:req.file.originalname,
       likers: [],
-      comments: [],
       datePost:req.body.datePost,
       userPseudo:req.body.userpseudo,
       userEmail:req.body.userEmail,
       userPicture:req.body.userPicture,
+      isAssociation:req.body.isAssociation
     });
     await myImage.save();
     console.log(req.file)
@@ -74,8 +74,8 @@ routerImg.post("/", upload.single('file'), async (req, res) => {
   }
 });
 
-routerImg.put('/:_id',(req,res) => {
-  Image.findOneAndUpdate({_id:req.params._id},req.body,function(err,data){
+routerImg.put('/:pictureName',(req,res) => {
+  Image.findOneAndUpdate({pictureName:req.params.pictureName},req.body,function(err,data){
     if(err){
       res.sendStatus(404)
     }
@@ -86,6 +86,7 @@ routerImg.put('/:_id',(req,res) => {
          }
      else{
           res.send(data)
+          console.log(req.body)
          }
     }
   })

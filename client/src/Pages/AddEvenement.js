@@ -102,6 +102,7 @@ const AddEvenement=()=>{
       data.append('userPseudo',user.pseudo)
       data.append('userEmail',user.email)
       data.append('userPicture',user.imgProfilUrl)
+      data.append('isAssociation',user.isAssociation)
       data.append('datePost',postDate)
      
       const IdImg = localStorage.setItem("name",uploadImg.name)
@@ -124,20 +125,9 @@ const AddEvenement=()=>{
        console.log(error);
       });
       
-     
-    // setUploadImg("");
      navigate("/homePage")
     }
     return(
-       /*<div>
-        <form action="/" encType="multipart/form-data">
-            <input type="file" name="file" onChange={ updateImg} className="form-control-file" />
-            <input type="text" name="title" onChange={(e)=>{setTitle({title:e.target.value})}} placeholder="title" />
-            <input type="text" name="message" onChange={(e)=>{setMessage({message:e.target.value})}} placeholder="message" />
-            <button type="submit" onClick={onSubmit}>submit</button> 
-        </form>
-        <img src={process.env.PUBLIC_URL + '/data/uploads/30f252e4d0bf27e9d3efc51d8baa56f7'} ></img>
-        </div>*/
         
         <div className="events-container">
       <div className="events-header" >

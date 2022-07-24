@@ -35,7 +35,8 @@ routerUser.post("/", upload.single('file'), async (req, res) => {
       imgProfilName:req.file.originalname,
       pseudo:req.body.pseudo,
       email:req.body.email,
-      password:req.body.password,    
+      password:req.body.password,
+      isAssociation:req.body.isAssociation   
     });
     await myUser.save();
     console.log(req.file)
@@ -53,16 +54,22 @@ routerUser.get('/:pseudo', function(req, res){
       res.send(data)  
        }
     )})
-
-    
-/*routerUser.post('/',(req,res) => {
-  console.log(req.body)
-  let myUser= new User(req.body)
-  myUser.save()
-   .then(() =>console.log("enregistré"))
-   .catch(err => console.log("error"))
-  res.send(myUser)  
-})*/
+    routerUser.put('/:_id',(req,res) => {
+      User.findOneAndUpdate({_id:req.params._id},req.body,function(err,data){
+        if(err){
+          res.sendStatus(404)
+        }
+        else
+        {
+          if (!data){
+              res.sendStatus(404)
+             }
+         else{
+              res.send(data)
+             }
+        }
+      })
+    })
 
 
 routerUser.delete('/:_id',(req,res) => {
