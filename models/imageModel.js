@@ -36,6 +36,7 @@ const imgSchema = new mongoose.Schema(
            ],
            
        },
+       datePost:String,
        userPseudo:String,
        userEmail:String,
        userPicture:String,

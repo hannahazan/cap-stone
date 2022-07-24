@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from "react";
 import axios from 'axios'
 import { useNavigate } from "react-router";
+import {Link} from 'react-router-dom'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+//import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -28,7 +29,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {  CardActionArea } from '@mui/material';
+import {  CardActionArea, getDialogContentTextUtilityClass } from '@mui/material';
+import { get } from "mongoose";
 
 
 
@@ -39,7 +41,7 @@ const darkTheme = createTheme({
     },
   });
 function HomePage() {
-   
+  
     const [checkBox,setCheckBox]= useState(false)
     const [FromSignUp,setFromSignUp]=useState(false)
     const [url,setUrl]=useState([])
@@ -113,15 +115,21 @@ function HomePage() {
      <Card sx={{ maxWidth: 370, /*maxHeight:300*/ }}>
       <CardHeader
         avatar={
-          <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + img.userPicture}/>
+        
+          <Link to="/profil_asso/:_id">
+              <button style={{border:"none",background:"none"}}>
+              <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + img.userPicture}/>
+              </button>
+            </Link>
+          
         }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={img.title}
+        subheader={img.datePost}
       />
       <CardMedia
         component="img"

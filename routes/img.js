@@ -60,6 +60,7 @@ routerImg.post("/", upload.single('file'), async (req, res) => {
       pictureName:req.file.originalname,
       likers: [],
       comments: [],
+      datePost:req.body.datePost,
       userPseudo:req.body.userpseudo,
       userEmail:req.body.userEmail,
       userPicture:req.body.userPicture,
@@ -73,7 +74,22 @@ routerImg.post("/", upload.single('file'), async (req, res) => {
   }
 });
 
-
+routerImg.put('/:_id',(req,res) => {
+  Image.findOneAndUpdate({_id:req.params._id},req.body,function(err,data){
+    if(err){
+      res.sendStatus(404)
+    }
+    else
+    {
+      if (!data){
+          res.sendStatus(404)
+         }
+     else{
+          res.send(data)
+         }
+    }
+  })
+})
 
 
   export default routerImg

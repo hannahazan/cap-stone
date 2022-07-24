@@ -24,8 +24,8 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" exact element={<HomePage />} />
-      <Route path="/signIn" exact element={<SignIn />} />
+      <Route path="/" exact element={<SignIn />} />
+      <Route path="/homePage" exact element={<HomePage />} />
       <Route path="/signUp" exact element={<SignUp />} />
       <Route path="/forget" exact element={<ForgetPswd />} />
       <Route path="/search" exact element={<Search />} />

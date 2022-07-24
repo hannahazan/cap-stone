@@ -26,7 +26,7 @@ export default function SignIn() {
       const navigateLog=() => {
         if(getPseudo===user.pseudo && getPassword===user.password){
           console.log("hello")
-          navigate("/")
+          navigate("/profil_asso/:_id/add_evenement")
          }
         }
 

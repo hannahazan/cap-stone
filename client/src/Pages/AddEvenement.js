@@ -12,6 +12,44 @@ import mongoose from "mongoose";
 
 const AddEvenement=()=>{
   
+    const date=new Date()
+    const day = date.getDate() 
+    const dayWeek= date.getDay()
+    const Year= date.getFullYear()
+    const Month= date.getMonth()
+
+    var today=""
+    const tabDayWeek=["sunday","monday","twesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+    for(let i=0;i<tabDayWeek.length;i++){
+      if(i===dayWeek)
+      {
+        today+=tabDayWeek[i]
+        console.log(today)
+        break
+      }
+      else(
+        console.log("not the good day")
+      )
+    }
+    
+    const tabMonth=["January","February","March","April","May","June","July","August","September","October","November",
+    "December"
+  ]
+  var month =""
+  for(let i=0;i<tabMonth.length;i++){
+    if(i===Month)
+    {
+      month+=tabMonth[i]
+      console.log(month)
+      break
+    }
+    else(
+      console.log("not the good Month")
+    )
+  }
+  var postDate= today+" "+day+"."+month+"."+Year
+  console.log(postDate)
+
   //const { user, login,changeUser } = useContext(UserContext);
     const pseudo=localStorage.getItem('pseudo')
     const [user,setUser]=useState([])
@@ -64,6 +102,7 @@ const AddEvenement=()=>{
       data.append('userPseudo',user.pseudo)
       data.append('userEmail',user.email)
       data.append('userPicture',user.imgProfilUrl)
+      data.append('datePost',postDate)
      
       const IdImg = localStorage.setItem("name",uploadImg.name)
       const titleImg= localStorage.setItem("title",title.title)
@@ -87,7 +126,7 @@ const AddEvenement=()=>{
       
      
     // setUploadImg("");
-     navigate("/")
+     navigate("/homePage")
     }
     return(
        /*<div>
