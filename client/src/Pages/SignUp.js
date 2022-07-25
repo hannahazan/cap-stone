@@ -1,7 +1,5 @@
 
-import FormAsso from "../components/FormAsso";
 import React, { useEffect, useState } from "react";
-//import { UserContext } from "../userContext.js";
 import axios from 'axios'
 import { useNavigate } from "react-router";
 import {Link} from 'react-router-dom'
@@ -11,8 +9,6 @@ import Stack from "@mui/material/Stack"
 import "../style/index.scss";
 import logo from "../img/CharyDeep_logo.png"
 
-
-// import Form from "../components/Form";
 export default function Signup() {
   const [checkBox,setCheckBox]= useState(false)
   const [formAssoMail, setFormAssoMail] = useState({
@@ -86,7 +82,7 @@ export default function Signup() {
     });
     
    
-   navigate("/profil_asso/:_id/add_evenement")
+   navigate("/homePage")
   } 
    
   
@@ -123,7 +119,7 @@ export default function Signup() {
      console.log(error);
     });
     
-   navigate("/profil_asso/:_id/add_evenement")
+   navigate("/homePage")
     
   }   
   return (

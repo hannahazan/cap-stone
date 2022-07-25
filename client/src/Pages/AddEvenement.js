@@ -1,17 +1,43 @@
-import { useNavigate } from "react-router";
+import { useNavigate, } from "react-router";
 import React, { useEffect, useState } from "react";
+import {Link} from 'react-router-dom'
 import "../style/index.scss";
 import logo from "../img/logo_color_charyDEEp.png";
-//import { UserContext } from "../userContext.js";
 import axios from 'axios'
-import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
-import mongoose from "mongoose";
+import { styled } from '@mui/material/styles';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Fab from '@mui/material/Fab';
+import Avatar from '@mui/material/Avatar';
+import SvgIcon from '@mui/material/SvgIcon';
+import SendSharpIcon from '@mui/icons-material/SendSharp';
 
+
+const StyledFab = styled(Fab)({
+  position: 'absolute',
+  zIndex: 1,
+  top: -30,
+  left: 0,
+  right: 0,
+  margin: '0 auto',
+});
+
+function HomeIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+    </SvgIcon>
+  );
+}
 
 const AddEvenement=()=>{
-  
+  // give the current date
+    const imgUrl=localStorage.getItem('imgUrl')
     const date=new Date()
     const day = date.getDate() 
     const dayWeek= date.getDay()
@@ -50,7 +76,6 @@ const AddEvenement=()=>{
   var postDate= today+" "+day+"."+month+"."+Year
   console.log(postDate)
 
-  //const { user, login,changeUser } = useContext(UserContext);
     const pseudo=localStorage.getItem('pseudo')
     const [user,setUser]=useState([])
     const [Img, setImg] = useState([]);
@@ -76,23 +101,16 @@ const AddEvenement=()=>{
       useEffect(() => {
         getUser();
       }, []);
-
-
-   
-  
     
     const navigate = useNavigate();
-
 
     const updateImg = (event) => {
        setUploadImg(event.target.files[0]);
       
     }
-    // This function will handle the submission.
-    
+   
     async function onSubmit(e) {
       e.preventDefault();
-      // When a post request is sent to the create url, we'll add a new record to the database.
       
       const data = new FormData();
       data.append('name','josephine')
@@ -108,6 +126,7 @@ const AddEvenement=()=>{
       const IdImg = localStorage.setItem("name",uploadImg.name)
       const titleImg= localStorage.setItem("title",title.title)
       const bodyImg= localStorage.setItem("message",message.message)
+      
       
       for (var value of data.values()) {
         console.log(value);
@@ -127,6 +146,7 @@ const AddEvenement=()=>{
       
      navigate("/homePage")
     }
+    
     return(
         
         <div className="events-container">
@@ -137,7 +157,6 @@ const AddEvenement=()=>{
         
         <form>
         <h1>Créer votre évènement</h1>
-        <p>{pseudo}</p>
           <label className="form-container" for="mytitle">
             Le titre
             <input type="text" onChange={(e)=>{setTitle({title:e.target.value})}}></input>
@@ -171,6 +190,27 @@ const AddEvenement=()=>{
           </button>
         </form>
       </div>
+      <React.Fragment>
+      <CssBaseline />
+      <AppBar position="fixed" color="secondary" sx={{ top: 'auto', bottom: 0 }}>
+        <Toolbar>
+        <Link to='/homePage'>
+            <IconButton color="inherit" aria-label="open drawer" >
+              <HomeIcon className="textd"/>
+            </IconButton >
+          </Link>
+          <Link to='/profil_asso/:_id/add_evenement'>
+            <IconButton color="inherit" aria-label="open drawer"className="textd">
+              <SendSharpIcon className="textd"/>
+            </IconButton>
+          </Link>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton color="inherit">
+              <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + imgUrl}/>  
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+    </React.Fragment>
     </div>
   );
                   

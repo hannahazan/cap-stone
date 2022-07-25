@@ -252,7 +252,7 @@ main {
     flex-direction: column;
 
     .events-header {
-        height: 80px;
+        height: 54px;
         width: 100%;
         margin-bottom: 2rem;
         
@@ -313,6 +313,11 @@ main {
             
             background-color: white;
         }
+        }
+
+        .textd{
+            text-decoration: none;
+            color: white;
         }
         
 // .img_btn {

@@ -60,7 +60,7 @@ routerImg.post("/", upload.single('file'), async (req, res) => {
       pictureName:req.file.originalname,
       likers: [],
       datePost:req.body.datePost,
-      userPseudo:req.body.userpseudo,
+      userPseudo:req.body.userPseudo,
       userEmail:req.body.userEmail,
       userPicture:req.body.userPicture,
       isAssociation:req.body.isAssociation

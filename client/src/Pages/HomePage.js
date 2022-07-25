@@ -6,16 +6,8 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-//import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -24,17 +16,23 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
-import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {  CardActionArea, getDialogContentTextUtilityClass } from '@mui/material';
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded';
-import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import Modal from '@mui/material/Modal';
-import { get } from "mongoose";
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Fab from '@mui/material/Fab';
+import SvgIcon from '@mui/material/SvgIcon';
+import SendSharpIcon from '@mui/icons-material/SendSharp';
 
+function HomeIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+    </SvgIcon>
+  );
+}
 const style = {
   position: 'absolute',
   top: '50%',
@@ -46,29 +44,29 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-const theme = createTheme();
-const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
+const StyledFab = styled(Fab)({
+  position: 'absolute',
+  zIndex: 1,
+  top: -30,
+  left: 0,
+  right: 0,
+  margin: '0 auto',
+});
 function HomePage() {
-  
-    const [checkBox,setCheckBox]= useState(false)
-    const [FromSignUp,setFromSignUp]=useState(false)
+
     const [url,setUrl]=useState([])
     const [user,setUser]=useState([])
     const [upgradeComment,setUpgradeComment]=useState({})
-    const [upgradeLike,setUpgradelike]=useState()
     const [post, setPost] = React.useState(null);
     const [comment,setComment]=useState()
-    const[onePost,setOnePost]=useState([])
+    const [onePost,setOnePost]=useState([])
+    const [picturePost,setPicturePost]=useState("")
     const [open, setOpen] = React.useState(false);
-    const test = localStorage.getItem('pseudo')
+    const connectedUser = localStorage.getItem('pseudo')
     const nameImg=localStorage.getItem('name')
     const imgUrl=localStorage.getItem('imgUrl')
-
+    
+    console.log(imgUrl)
     const navigate=useNavigate()
     const getUrl = () => {
       return axios
@@ -82,7 +80,7 @@ function HomePage() {
     };
     const getUser = () => {
       return axios
-        .get(`http://localhost:5000/users/${test}`)
+        .get(`http://localhost:5000/users/${connectedUser}`)
         .then((res) => {
           console.log(setUser(res.data))
           ;
@@ -97,7 +95,7 @@ function HomePage() {
       
     },[] );
 
-    const onSubmit=()=>{
+    const onSubmitComment=()=>{
       var canUse=[]
         console.log(upgradeComment.commentsOnePost[0])
         canUse.push(comment)  
@@ -111,14 +109,11 @@ function HomePage() {
         return axios
           .put(`http://localhost:5000/img/${upgradeComment.imgOnePost}`,{comments:canUse})
           .then((response) => {
-            console.log(setPost(response.data))
-
-            ;
+            console.log(setPost(response.data));
           })
-          .catch((err) => console.error(err));
-
-      
+          .catch((err) => console.error(err));  
     }
+
 
     const ExpandMore = styled((props) => {
       const { expand, ...other } = props;
@@ -142,57 +137,32 @@ function HomePage() {
   return (
     
     <div>
-      {/*<p>{test}</p>
-      { FromSignUp===false?
-      <img src={process.env.PUBLIC_URL + imgUrl} ></img>
-      :
-      <img src={process.env.PUBLIC_URL + url} ></img>
-      }
-    <FormGroup>
-            <FormControlLabel control={<Checkbox   />} label="darkMode
-            "  onChange={()=>{checkBox===true?setCheckBox(false):setCheckBox(true)}}/>
-    </FormGroup>
-    {checkBox===true?
-    
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <main>  
-        
-      </main>
-    </ThemeProvider>
-    :
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <main>  
-        
-      </main>
-    </ThemeProvider>
-    */}
      {url.map((img)=>{
       if(img.isAssociation===true){
       return(
-     <Card sx={{ maxWidth: 370, /*maxHeight:300*/ }}>
+     <Card sx={{ py:5,maxWidth: 370,}}>
       <CardHeader
         avatar={
-        
-          <Link to="/profil_asso/:_id">
               <button style={{border:"none",background:"none"}}>
               <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + img.userPicture}/>
-              </button>
-            </Link>
-          
+              </button>     
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
         }
         title={img.title}
         subheader={img.datePost}
       />
       <CardMedia
         component="img"
-        height="150"
+        height="130"
         image={process.env.PUBLIC_URL + img.pictureUrl}
         alt="Paella dish"
       />
@@ -233,18 +203,12 @@ function HomePage() {
                 color="secondary"
                 onChange={(e)=>{setComment(e.target.value)}}
               />
-               <Button variant="contained" color="secondary" onClick={onSubmit}>submit</Button>
+               <Button variant="contained" color="secondary" onClick={onSubmitComment}>submit</Button>
           </Box>
         </Box>
         </Modal>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
+
+
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
@@ -266,6 +230,27 @@ function HomePage() {
     )}
     else(console.log("not an association"))
     })}
+     <React.Fragment>
+      <CssBaseline />
+      <AppBar position="fixed" color="secondary" sx={{ top: 'auto', bottom: 0 }}>
+        <Toolbar>
+        <Link to='/homePage'>
+            <IconButton color="inherit" aria-label="open drawer">
+              <HomeIcon className="textd"/>
+            </IconButton>
+          </Link>
+          <Link to='/profil_asso/:_id/add_evenement'>
+            <IconButton color="inherit" aria-label="open drawer">
+              <SendSharpIcon className="textd"/>
+            </IconButton>
+          </Link>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton color="inherit">
+              <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + imgUrl}/>  
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+    </React.Fragment>
     </div>
     
   );
