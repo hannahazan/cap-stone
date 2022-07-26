@@ -6,6 +6,7 @@ import React, { useEffect, useState,} from "react";
 import logo from "../img/CharyDeep_logo.png"
 
 export default function SignIn() {
+    const pseudoOnePost=localStorage.getItem("pseudoOnePost")
     const [getPseudo,setGetPseudo]=useState()
     const [getPassword,setGetPassword]=useState()
     const [user,setGetUser]=useState([])
@@ -38,6 +39,7 @@ export default function SignIn() {
   return (
     <main className="signin-main">
       <header>
+        <p>{pseudoOnePost}</p>
         <img src={logo} style={{height:"100px",marginTop:"14px" }}alt="Logo" />
       </header>
       <div className="form-main">

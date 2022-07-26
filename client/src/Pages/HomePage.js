@@ -52,32 +52,37 @@ const StyledFab = styled(Fab)({
   right: 0,
   margin: '0 auto',
 });
+
 function HomePage() {
 
-    const [url,setUrl]=useState([])
+    const [allPosts,setAllPosts]=useState([])
     const [user,setUser]=useState([])
     const [upgradeComment,setUpgradeComment]=useState({})
     const [post, setPost] = React.useState(null);
     const [comment,setComment]=useState()
     const [onePost,setOnePost]=useState([])
-    const [picturePost,setPicturePost]=useState("")
+    const [getAllPost,setGetAllPost]=useState([])
     const [open, setOpen] = React.useState(false);
     const connectedUser = localStorage.getItem('pseudo')
     const nameImg=localStorage.getItem('name')
     const imgUrl=localStorage.getItem('imgUrl')
     
-    console.log(imgUrl)
+   
     const navigate=useNavigate()
-    const getUrl = () => {
+
+   //récupère les données des de la collection img afin de pouvoir les afficher avec le map 
+    const getPosts = () => {
       return axios
         .get("http://localhost:5000/img")
         .then((res) => {
-          console.log(setUrl(res.data))
+          console.log(setAllPosts(res.data))
           
           ;
         })
         .catch((err) => console.error(err));
     };
+
+    //récupère les infos de l'utilisateur connecté pour les réutiliser entre autre dans l'affichage de photo navbar
     const getUser = () => {
       return axios
         .get(`http://localhost:5000/users/${connectedUser}`)
@@ -87,34 +92,44 @@ function HomePage() {
         })
         .catch((err) => console.error(err));
     };
+    const getAllPostofOne=()=>{
+      const pseudoPost = localStorage.setItem("pseudoOnePost",onePost) 
+     }
 
     
      useEffect(() => {
-      getUrl();
-      getUser()
-      
-    },[] );
-
+      getPosts();
+      getUser() 
+     },[]);
+     
+     useEffect(()=>{
+      getAllPostofOne()
+     })
+    //ajoute un commentaire au post dans la base de donnée
     const onSubmitComment=()=>{
-      var canUse=[]
+      var canUseComment=[]
         console.log(upgradeComment.commentsOnePost[0])
-        canUse.push(comment)  
+        canUseComment.push(comment)  
         for(let i=0;i<upgradeComment.commentsOnePost.length;i++){
-          canUse.push(upgradeComment.commentsOnePost[i])
+          canUseComment.push(upgradeComment.commentsOnePost[i])
         }
-        for(let j=0;j<canUse.length;j++){
-          console.log(canUse[j])
+        for(let j=0;j<canUseComment.length;j++){
+          console.log(canUseComment[j])
         }
         
         return axios
-          .put(`http://localhost:5000/img/${upgradeComment.imgOnePost}`,{comments:canUse})
+          .put(`http://localhost:5000/img/${upgradeComment.imgOnePost}`,{comments:canUseComment})
           .then((response) => {
             console.log(setPost(response.data));
           })
           .catch((err) => console.error(err));  
     }
 
+    
+    
+    
 
+   //fonctions qui prennent en charge l'expend des cards, natif MUI
     const ExpandMore = styled((props) => {
       const { expand, ...other } = props;
       return <IconButton {...other} />;
@@ -137,15 +152,18 @@ function HomePage() {
   return (
     
     <div>
-     {url.map((img)=>{
+     {/*affichage des posts (img dans ma base de donnée)*/}
+     {allPosts.map((img)=>{
       if(img.isAssociation===true){
       return(
      <Card sx={{ py:5,maxWidth: 370,}}>
       <CardHeader
         avatar={
-              <button style={{border:"none",background:"none"}}>
+              
+              <button style={{border:"none",background:"none"}} onClick={(e)=>{setOnePost(img.userPseudo)}}>
               <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + img.userPicture}/>
-              </button>     
+              </button>
+                   
         }
         action={
           <ExpandMore
@@ -246,7 +264,9 @@ function HomePage() {
           </Link>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton color="inherit">
-              <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + imgUrl}/>  
+              <button  style={{border:"none",background:"none"}} >
+              <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + user.imgProfilUrl}/> 
+              </button> 
           </IconButton>
         </Toolbar>
       </AppBar>

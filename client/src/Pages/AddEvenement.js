@@ -35,27 +35,26 @@ function HomeIcon(props) {
   );
 }
 
+
 const AddEvenement=()=>{
-  // give the current date
-    const imgUrl=localStorage.getItem('imgUrl')
+  //donne la date du post
     const date=new Date()
     const day = date.getDate() 
     const dayWeek= date.getDay()
     const Year= date.getFullYear()
     const Month= date.getMonth()
-
+  
     var today=""
     const tabDayWeek=["sunday","monday","twesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
     for(let i=0;i<tabDayWeek.length;i++){
       if(i===dayWeek)
       {
         today+=tabDayWeek[i]
-        console.log(today)
         break
       }
-      else(
+      else{
         console.log("not the good day")
-      )
+      }
     }
     
     const tabMonth=["January","February","March","April","May","June","July","August","September","October","November",
@@ -72,11 +71,13 @@ const AddEvenement=()=>{
     else(
       console.log("not the good Month")
     )
+    var postDate= today+" "+day+"."+month+"."+Year
   }
-  var postDate= today+" "+day+"."+month+"."+Year
-  console.log(postDate)
-
-    const pseudo=localStorage.getItem('pseudo')
+//******** */
+    
+//récupère le pseudo de l'utilisateur pour l'utiliser dans un fetch get lorsque l'on arrive sur la page
+    const pseudo=localStorage.getItem("pseudo")
+//***** */    
     const [user,setUser]=useState([])
     const [Img, setImg] = useState([]);
     const [uploadImg, setUploadImg] = useState()
@@ -86,13 +87,12 @@ const AddEvenement=()=>{
     const[message,setMessage]=useState({
       message:""
     })
-   
+//récupère les infos de l'utilisateur connecté lors du chargement de la page    
     const getUser=()=>{
       return axios
       .get(`http://localhost:5000/users/${pseudo}`)
       .then((res) => {
-        console.log(setUser(res.data))
-       
+        console.log(setUser(res.data)) 
         ;
       })
       .catch((err) => console.error(err));
@@ -101,17 +101,17 @@ const AddEvenement=()=>{
       useEffect(() => {
         getUser();
       }, []);
-    
+//********* */    
     const navigate = useNavigate();
 
+//récupère l'image lorsqu'elle est choisie par l'utilisateur    
     const updateImg = (event) => {
-       setUploadImg(event.target.files[0]);
-      
+       setUploadImg(event.target.files[0]);  
     }
    
     async function onSubmit(e) {
       e.preventDefault();
-      
+//ajoute les informations précisées avec append qui vont être ajoutées à l'objet Formdata       
       const data = new FormData();
       data.append('name','josephine')
       data.append('file',uploadImg)
@@ -122,16 +122,17 @@ const AddEvenement=()=>{
       data.append('userPicture',user.imgProfilUrl)
       data.append('isAssociation',user.isAssociation)
       data.append('datePost',postDate)
-     
+//***** */
+
+//permet de passer outre le regarchement des pages et de stocker des infos qui pourront être réutiliser dans 
+//d'autres pages
       const IdImg = localStorage.setItem("name",uploadImg.name)
       const titleImg= localStorage.setItem("title",title.title)
       const bodyImg= localStorage.setItem("message",message.message)
       
-      
-      for (var value of data.values()) {
-        console.log(value);
-     }
-      
+ //****** */  
+ 
+ //envois les données du post vers la base de donnée
       const config = {
         headers: {
           'content-type': 'multipart/form-data'
@@ -146,9 +147,8 @@ const AddEvenement=()=>{
       
      navigate("/homePage")
     }
-    
+ //******* */   
     return(
-        
         <div className="events-container">
       <div className="events-header" >
         <img className="img-logo" src={logo} alt="Logo"  />
@@ -206,7 +206,7 @@ const AddEvenement=()=>{
           </Link>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton color="inherit">
-              <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + imgUrl}/>  
+              <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + user.imgProfilUrl}/>  
           </IconButton>
         </Toolbar>
       </AppBar>

@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors'
 import multer from 'multer';
 import routerUsers from './routes/users.js';
-import routerPost from './routes/posts.js'
+
 import routerImg from './routes/img.js';
 const app = express()
 const port = 5000
@@ -14,7 +14,6 @@ app.use(express.static('public'))
 
 
 app.use('/users',routerUsers)
-app.use('/posts',routerPost)
 app.use('/img',routerImg)
 
 

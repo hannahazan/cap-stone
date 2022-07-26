@@ -5,6 +5,7 @@ const routerImg= express.Router()
 routerImg.use(express.json());
 routerImg.use(express.urlencoded({extended: true}))
 import Image from '../models/imageModel.js'
+import mongoose from 'mongoose'
 
 
 const upload = multer({ dest: 'client/public/data/uploads' })
@@ -19,23 +20,25 @@ routerImg.get('/', function (req, res) {
   })
 })
 
-// **getOnePost**/////////////////////////////////////////////////////
-/*routerImg.get('/:pictureUrl', function (req, res) {
-  Image.
-  findOne({ pictureName: req.params.pictureName }).
-  populate('userPseudo').
-  exec(function (err, images) {
-    if (err) return handleError(err);
-    console.log('The author is %s', images.userPseudo.firstname);
-    // prints "The author is Ian Fleming"
-  })
-});*/
 routerImg.get('/:pictureName', function (req, res) {
   Image.findOne({ pictureName: req.params.pictureName }, (err, data) => {
     res.send(data)
   }
   )
 });
+//find all the post of the userPseudo speciefied
+routerImg.get('/pseudo/:userPseudo',function(req,res){
+  Image.find({userPseudo:req.params.userPseudo}, 
+  (err,data)=>{ console.log(data);
+  res.send(data) });})
+
+
+/*routerImg.get('/name/:userPseudo', function (req, res) {
+  Image.findOne({ userPseudo: req.params.userPseudo }, (err, data) => {
+    res.send(data)
+  }
+  )
+});*/
 
 
 
