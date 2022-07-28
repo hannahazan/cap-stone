@@ -37,6 +37,8 @@ function HomeIcon(props) {
 
 
 const AddEvenement=()=>{
+  const testPseudo= sessionStorage.getItem("pseudoOnePost")
+  const testIsVisitor= sessionStorage.getItem("isVisitor")
   //donne la date du post
     const date=new Date()
     const day = date.getDate() 
@@ -76,7 +78,7 @@ const AddEvenement=()=>{
 //******** */
     
 //récupère le pseudo de l'utilisateur pour l'utiliser dans un fetch get lorsque l'on arrive sur la page
-    const pseudo=localStorage.getItem("pseudo")
+    const pseudo=sessionStorage.getItem("pseudo")
 //***** */    
     const [user,setUser]=useState([])
     const [Img, setImg] = useState([]);
@@ -126,9 +128,9 @@ const AddEvenement=()=>{
 
 //permet de passer outre le regarchement des pages et de stocker des infos qui pourront être réutiliser dans 
 //d'autres pages
-      const IdImg = localStorage.setItem("name",uploadImg.name)
-      const titleImg= localStorage.setItem("title",title.title)
-      const bodyImg= localStorage.setItem("message",message.message)
+      const IdImg = sessionStorage.setItem("name",uploadImg.name)
+      const titleImg= sessionStorage.setItem("title",title.title)
+      const bodyImg= sessionStorage.setItem("message",message.message)
       
  //****** */  
  
@@ -151,6 +153,8 @@ const AddEvenement=()=>{
     return(
         <div className="events-container">
       <div className="events-header" >
+        <p>{testPseudo}</p>
+        <p>{testIsVisitor}</p>
         <img className="img-logo" src={logo} alt="Logo"  />
       </div>
       <div className="event-form-container">

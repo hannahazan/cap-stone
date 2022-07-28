@@ -9,6 +9,7 @@ imgProfilName:String,
 pseudo:String,
 email:String,
 password:String,
+followers:Array,
 isAssociation:Boolean,
 })
 

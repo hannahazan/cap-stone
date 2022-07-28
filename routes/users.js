@@ -54,22 +54,22 @@ routerUser.get('/:pseudo', function(req, res){
       res.send(data)  
        }
     )})
-    routerUser.put('/:_id',(req,res) => {
-      User.findOneAndUpdate({_id:req.params._id},req.body,function(err,data){
-        if(err){
-          res.sendStatus(404)
-        }
-        else
-        {
-          if (!data){
-              res.sendStatus(404)
-             }
-         else{
-              res.send(data)
-             }
-        }
-      })
+  routerUser.put('/:pseudo',(req,res) => {
+    User.findOneAndUpdate({pseudo:req.params.pseudo},req.body,function(err,data){
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
     })
+  })
 
 
 routerUser.delete('/:_id',(req,res) => {

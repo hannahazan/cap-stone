@@ -1,7 +1,9 @@
 
 import "../style/index.scss";
-import * as React from "react";
-
+import { useNavigate, } from "react-router";
+import React, { useEffect, useState } from "react";
+import {Link} from 'react-router-dom'
+import axios from "axios"
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -37,10 +39,85 @@ import AddReactionOutlinedIcon from "@mui/icons-material/AddReactionOutlined";
 
 
 export default function ProfilAsso(props) {
-  const [value, setValue] = React.useState("recents");
-  const cards = [1, 2, 3, 4];
-  const profilcards = [1, 2, 3, 4, , 5, 6];
-  const imgAvatar= localStorage.getItem('imgUrl')
+  const pseudo=sessionStorage.getItem("pseudoOnePost")
+  const isVisitor=sessionStorage.getItem("isVisitor")
+  const connectedUser =sessionStorage.getItem('pseudo')
+  const connectedUserAvatar= sessionStorage.getItem('imgUrl')
+  
+  const [userPostData,setuserPostdata]=useState([])
+  const [userPost, setUserPost]=useState([]);
+  const [connectedUserData,setConnectedUserData]=useState([]);
+  const [follow,setFollow]=useState({
+    follower:"",
+    followerAvatar:""
+  })
+  const [addFollower,setAddfollower]=useState()
+  const profilcards = [1];
+
+  const getUserPostData=()=>{
+    return axios
+    .get(`http://localhost:5000/users/${pseudo}`)
+    .then((res) => {
+      console.log(setuserPostdata(res.data)) 
+      ;
+    })
+    .catch((err) => console.error(err));
+  }
+  const getUserPost=()=>{
+    return axios
+    .get(`http://localhost:5000/img/pseudo/${pseudo}`)
+    .then((res) => {
+      console.log(setUserPost(res.data)) 
+      sessionStorage.setItem("avatar",res.data[0].userPicture)
+      ;
+    })
+    .catch((err) => console.error(err));
+};
+
+  const getConnectedUser=()=>{
+    return axios
+    .get(`http://localhost:5000/users/${connectedUser}`)
+    .then((res) => {
+      console.log(setConnectedUserData(res.data)) 
+      ;
+    })
+    .catch((err) => console.error(err));
+  }
+    
+      useEffect(() => {
+        getUserPost();
+        getConnectedUser();
+        getUserPostData();
+      }, []);
+
+      const handleSubmit=()=>{
+        setFollow({
+          follower:connectedUser,
+          followerAvatar:connectedUserAvatar
+        })
+      }
+      const AddFollower=()=>{
+        if (follow.follower !==""){
+        var canUseFollow = []
+        canUseFollow.push(follow)
+        for(let i=0;i < userPostData.followers.length;i++) {
+          canUseFollow.push(userPostData.followers[i])
+        }
+        return axios
+        .put(`http://localhost:5000/users/${pseudo}`,{followers:canUseFollow})
+        .then((response) => {
+          console.log(setAddfollower(response.data));
+        })
+        .catch((err) => console.error(err)); 
+      }else{
+        console.log("none is following you!")
+      } 
+      }
+      useEffect(()=>{
+        AddFollower()
+      })
+      
+      const avatar=sessionStorage.getItem("avatar")
   return (
     <Container sx={{ py: 5 }} maxWidth="md" style={{background:"radial-gradient(#DF65CD69,#FBBC0580)"}}>
       <Grid
@@ -53,11 +130,10 @@ export default function ProfilAsso(props) {
             <Grid xs={3} sx={{ height: "100%", display: "flex" }}>
               <Avatar
                 alt="Remy Sharp"
-                src={process.env.PUBLIC_URL + imgAvatar}
+                src={process.env.PUBLIC_URL + avatar}
                 sx={{ width: 90, height: 90 }}
               />
             </Grid>
-{/* la ou commence le cote chiant avec las boutons et le texte */}
             <Grid
               xs={9}
               sx={{
@@ -84,6 +160,7 @@ export default function ProfilAsso(props) {
                     label="Follow"
                     value="follow"
                     icon={<AddReactionOutlinedIcon fontSize="large"className="iconP" />}
+                    onClick={handleSubmit}
                   />
                   <p classeName="p_icons"style={{ textAlign: "center",fontFamily:"poppins",fontSize:"18px" }}>Follow</p>
                 </Grid>
@@ -128,13 +205,13 @@ export default function ProfilAsso(props) {
 
         <h1 className="myTitle">My Followers</h1>
         <Grid container spacing={3}>
-          {profilcards.map((profilcard) => (
-            <Grid item key={profilcard} xs={3}>
+          {userPostData.followers.map((foll) => (
+            <Grid item  xs={3}>
               <a href="#"sx={{height: "100%",display: "flex", flexDirection: "column",justifyContent: "center",
            }}
               >
                 <Avatar
-                  src={"https://source.unsplash.com/random"}
+                  src={process.env.PUBLIC_URL + foll.followerAvatar}
                   sx={{ width: 60, height: 60 }}
                 />
               </a>
@@ -144,8 +221,8 @@ export default function ProfilAsso(props) {
 
         <h1 className="myTitle">My events</h1>
         <Grid container spacing={4}>
-          {cards.map((card) => (
-            <Grid item key={card} xs={4}>
+          {userPost.map((event) => (
+            <Grid  xs={4} >
               <Card
                 sx={{
                   height: "100%",
@@ -156,7 +233,7 @@ export default function ProfilAsso(props) {
                 <a href="#">
                   <CardMedia
                     component="img"
-                    image="https://source.unsplash.com/random"
+                    image={process.env.PUBLIC_URL + event.pictureUrl}
                     alt="random"
                   />
                 </a>
@@ -168,7 +245,7 @@ export default function ProfilAsso(props) {
                     component="h2"
                     sx={{ textAlign: "center" }}
                   >
-                    <strong>title</strong>
+                    <strong>{event.title}</strong>
                   </Typography>
                 </CardContent>
               </Card>

@@ -62,8 +62,8 @@ export default function Signup() {
     data.append('password',formVltPassword.password)
     data.append('isAssociation',false)
    
-    const IdImg = localStorage.setItem("imgName",imgProfile.name)
-    const userPseudo= localStorage.setItem("pseudo",formVltPseudo.pseudo)
+    const IdImg = sessionStorage.setItem("imgName",imgProfile.name)
+    const userPseudo= sessionStorage.setItem("pseudo",formVltPseudo.pseudo)
     
     for (var value of data.values()) {
       console.log(value);
@@ -99,8 +99,8 @@ export default function Signup() {
     data.append('password',formAssoPassword.password)
     data.append('isAssociation',true)
    
-    const IdImg = localStorage.setItem("nameImgProfile",imgProfile.name)
-    const userPseudo= localStorage.setItem("pseudo",formAssoPseudo.pseudo)
+    const IdImg = sessionStorage.setItem("nameImgProfile",imgProfile.name)
+    const userPseudo= sessionStorage.setItem("pseudo",formAssoPseudo.pseudo)
     
     
     for (var value of data.values()) {

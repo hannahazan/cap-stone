@@ -6,18 +6,18 @@ import React, { useEffect, useState,} from "react";
 import logo from "../img/CharyDeep_logo.png"
 
 export default function SignIn() {
-    const pseudoOnePost=localStorage.getItem("pseudoOnePost")
+   
     const [getPseudo,setGetPseudo]=useState()
     const [getPassword,setGetPassword]=useState()
     const [user,setGetUser]=useState([])
-    const test=localStorage.getItem('gagner')
+    const test=sessionStorage.getItem('gagner')
     const getUser = () => {
         return axios
           .get(`http://localhost:5000/users/${getPseudo}`)
           .then((res) => {
             console.log(setGetUser(res.data))
-            localStorage.setItem('pseudo',user.pseudo)
-            localStorage.setItem('imgUrl',user.imgProfilUrl)
+            sessionStorage.setItem('pseudo',user.pseudo)
+            sessionStorage.setItem('imgUrl',user.imgProfilUrl)
             navigateLog()
           })
           .catch((err) => console.error(err));
@@ -39,7 +39,6 @@ export default function SignIn() {
   return (
     <main className="signin-main">
       <header>
-        <p>{pseudoOnePost}</p>
         <img src={logo} style={{height:"100px",marginTop:"14px" }}alt="Logo" />
       </header>
       <div className="form-main">

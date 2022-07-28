@@ -25,6 +25,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Fab from '@mui/material/Fab';
 import SvgIcon from '@mui/material/SvgIcon';
 import SendSharpIcon from '@mui/icons-material/SendSharp';
+import { Grid } from "@mui/material";
 
 function HomeIcon(props) {
   return (
@@ -60,12 +61,17 @@ function HomePage() {
     const [upgradeComment,setUpgradeComment]=useState({})
     const [post, setPost] = React.useState(null);
     const [comment,setComment]=useState()
-    const [onePost,setOnePost]=useState([])
+    //state qui permet de récupérer le pseudo d'un post en particulier pour l'envoyer vers la page profil
+    const [onePost,setOnePost]=useState({
+      pseudo:"",
+      isVisitor:Boolean
+    })
+    /********* */
     const [getAllPost,setGetAllPost]=useState([])
     const [open, setOpen] = React.useState(false);
-    const connectedUser = localStorage.getItem('pseudo')
-    const nameImg=localStorage.getItem('name')
-    const imgUrl=localStorage.getItem('imgUrl')
+    const connectedUser =sessionStorage.getItem('pseudo')
+    const nameImg=sessionStorage.getItem('name')
+    const imgUrl=sessionStorage.getItem('imgUrl')
     
    
     const navigate=useNavigate()
@@ -92,8 +98,17 @@ function HomePage() {
         })
         .catch((err) => console.error(err));
     };
-    const getAllPostofOne=()=>{
-      const pseudoPost = localStorage.setItem("pseudoOnePost",onePost) 
+    //permet d'enregistrer le pseudo d'un post en particulier et de se rendre à la page souhaitée
+      const  getAllPostofOne=()=>{
+      const pseudoPost = sessionStorage.setItem("pseudoOnePost",onePost.pseudo)
+      const isVisitor= sessionStorage.setItem("isVisitor",onePost.isVisitor)
+          
+          if (onePost.isVisitor===true){
+              navigate("/profil_asso/:_id/")
+          }
+          else{
+            console.log("pas encore")
+          }
      }
 
     
@@ -156,15 +171,14 @@ function HomePage() {
      {allPosts.map((img)=>{
       if(img.isAssociation===true){
       return(
+      <Grid spacing={2}>
      <Card sx={{ py:5,maxWidth: 370,}}>
       <CardHeader
         avatar={
-              
-              <button style={{border:"none",background:"none"}} onClick={(e)=>{setOnePost(img.userPseudo)}}>
-              <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + img.userPicture}/>
-              </button>
-                   
-        }
+              <button style={{border:"none",background:"none"}} onClick={(e)=>{setOnePost({pseudo:img.userPseudo,isVisitor:true})}}>
+                      <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + img.userPicture}/>  
+              </button>       
+        }   
         action={
           <ExpandMore
           expand={expanded}
@@ -225,8 +239,6 @@ function HomePage() {
           </Box>
         </Box>
         </Modal>
-
-
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
@@ -245,6 +257,7 @@ function HomePage() {
         </CardContent>
       </Collapse>
     </Card>
+    </Grid>
     )}
     else(console.log("not an association"))
     })}
