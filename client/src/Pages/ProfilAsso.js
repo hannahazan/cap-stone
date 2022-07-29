@@ -44,12 +44,12 @@ export default function ProfilAsso(props) {
   const connectedUser =sessionStorage.getItem('pseudo')
   const connectedUserAvatar= sessionStorage.getItem('imgUrl')
   
-  const [userPostData,setuserPostdata]=useState([])
+  const [userPostData,setuserPostdata]=useState(null)
   const [userPost, setUserPost]=useState([]);
   const [connectedUserData,setConnectedUserData]=useState([]);
   const [follow,setFollow]=useState({
-    follower:"",
-    followerAvatar:""
+    follower:connectedUser,
+    followerAvatar:connectedUserAvatar
   })
   const [addFollower,setAddfollower]=useState()
   const profilcards = [1];
@@ -73,6 +73,9 @@ export default function ProfilAsso(props) {
     })
     .catch((err) => console.error(err));
 };
+  useEffect(()=>{
+    getUserPostData();
+  },[])
 
   const getConnectedUser=()=>{
     return axios
@@ -86,18 +89,12 @@ export default function ProfilAsso(props) {
     
       useEffect(() => {
         getUserPost();
-        getConnectedUser();
-        getUserPostData();
+        getConnectedUser(); 
       }, []);
 
-      const handleSubmit=()=>{
-        setFollow({
-          follower:connectedUser,
-          followerAvatar:connectedUserAvatar
-        })
-      }
+    
+      
       const AddFollower=()=>{
-        if (follow.follower !==""){
         var canUseFollow = []
         canUseFollow.push(follow)
         for(let i=0;i < userPostData.followers.length;i++) {
@@ -107,16 +104,11 @@ export default function ProfilAsso(props) {
         .put(`http://localhost:5000/users/${pseudo}`,{followers:canUseFollow})
         .then((response) => {
           console.log(setAddfollower(response.data));
+         
         })
         .catch((err) => console.error(err)); 
-      }else{
-        console.log("none is following you!")
-      } 
       }
-      useEffect(()=>{
-        AddFollower()
-      })
-      
+     
       const avatar=sessionStorage.getItem("avatar")
   return (
     <Container sx={{ py: 5 }} maxWidth="md" style={{background:"radial-gradient(#DF65CD69,#FBBC0580)"}}>
@@ -160,7 +152,7 @@ export default function ProfilAsso(props) {
                     label="Follow"
                     value="follow"
                     icon={<AddReactionOutlinedIcon fontSize="large"className="iconP" />}
-                    onClick={handleSubmit}
+                    onClick={AddFollower}
                   />
                   <p classeName="p_icons"style={{ textAlign: "center",fontFamily:"poppins",fontSize:"18px" }}>Follow</p>
                 </Grid>
@@ -204,9 +196,10 @@ export default function ProfilAsso(props) {
         </Grid>
 
         <h1 className="myTitle">My Followers</h1>
-        <Grid container spacing={3}>
-          {userPostData.followers.map((foll) => (
-            <Grid item  xs={3}>
+       <Grid container spacing={3}>
+          {userPostData!==null?
+            userPostData.followers.map((foll) => (
+            <Grid item xs={3}>
               <a href="#"sx={{height: "100%",display: "flex", flexDirection: "column",justifyContent: "center",
            }}
               >
@@ -216,13 +209,16 @@ export default function ProfilAsso(props) {
                 />
               </a>
             </Grid>
-          ))}
-        </Grid>
+          ))
+          :
+          console.log("sûrement ça le problème")
+          }
+          </Grid>
 
         <h1 className="myTitle">My events</h1>
         <Grid container spacing={4}>
           {userPost.map((event) => (
-            <Grid  xs={4} >
+            <Grid item  xs={4} >
               <Card
                 sx={{
                   height: "100%",
