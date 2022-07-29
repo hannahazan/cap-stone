@@ -82,7 +82,7 @@ export default function Signup() {
     });
     
    
-   navigate("/homePage")
+   navigate("/")
   } 
    
   
@@ -119,7 +119,7 @@ export default function Signup() {
      console.log(error);
     });
     
-   navigate("/homePage")
+   navigate("/")
     
   }   
   return (
