@@ -36,6 +36,14 @@ import FolderIcon from "@mui/icons-material/Folder";
 import RestoreIcon from "@mui/icons-material/Restore";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AddReactionOutlinedIcon from "@mui/icons-material/AddReactionOutlined";
+import Toolbar from '@mui/material/Toolbar';
+import Fab from '@mui/material/Fab';
+import SvgIcon from '@mui/material/SvgIcon';
+import SendSharpIcon from '@mui/icons-material/SendSharp';
+import Box from '@mui/material/Box';
+import AppBar from '@mui/material/AppBar';
+
+
 
 
 export default function ProfilAsso(props) {
@@ -52,6 +60,10 @@ export default function ProfilAsso(props) {
     followerAvatar:connectedUserAvatar
   })
   const [addFollower,setAddfollower]=useState()
+  const [displayLastFollow,setDisplaylastFollow]=useState({
+    justFollowAvatar:"",
+    isJustfollowed:false
+  })
   const profilcards = [1];
 
   const getUserPostData=()=>{
@@ -100,6 +112,7 @@ export default function ProfilAsso(props) {
         for(let i=0;i < userPostData.followers.length;i++) {
           canUseFollow.push(userPostData.followers[i])
         }
+        setDisplaylastFollow({justFollowAvatar:connectedUserAvatar,isJustfollowed:true})
         return axios
         .put(`http://localhost:5000/users/${pseudo}`,{followers:canUseFollow})
         .then((response) => {
@@ -197,6 +210,20 @@ export default function ProfilAsso(props) {
 
         <h1 className="myTitle">My Followers</h1>
        <Grid container spacing={3}>
+        {displayLastFollow.isJustfollowed===true?
+           <Grid item xs={3}>
+              <a href="#"sx={{height: "100%",display: "flex", flexDirection: "column",justifyContent: "center",
+              }}
+              >
+                <Avatar
+                  src={process.env.PUBLIC_URL + displayLastFollow.justFollowAvatar}
+                  sx={{ width: 60, height: 60 }}
+                />
+              </a>
+            </Grid>
+            :
+            console.log("no use tricks")
+          }
           {userPostData!==null?
             userPostData.followers.map((foll) => (
             <Grid item xs={3}>
@@ -248,6 +275,29 @@ export default function ProfilAsso(props) {
             </Grid>
           ))}
         </Grid>
+        <React.Fragment>
+      <CssBaseline />
+      <AppBar position="fixed" color="secondary" sx={{ top: 'auto', bottom: 0 }}>
+        <Toolbar>
+        <Link to='/homePage'>
+            <IconButton color="inherit" aria-label="open drawer">
+              <HomeIcon className="textd"/>
+            </IconButton>
+          </Link>
+          <Link to='/profil_asso/:_id/add_evenement'>
+            <IconButton color="inherit" aria-label="open drawer">
+              <SendSharpIcon className="textd"/>
+            </IconButton>
+          </Link>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton color="inherit">
+              <button  style={{border:"none",background:"none"}} >
+              <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + connectedUserAvatar}/> 
+              </button> 
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+    </React.Fragment>
       </Grid>
     </Container>
   );
