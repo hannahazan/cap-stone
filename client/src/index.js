@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import MyProfil from "./Pages/MyProfil"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignIn from "./Pages/SignIn";
 import SignUp from "./Pages/SignUp";
@@ -18,6 +19,7 @@ root.render(
       <Route path="/signUp" exact element={<SignUp />} />
       <Route path="/profil_asso/:_id" exact element={<ProfilAsso />} />
       <Route path="/profil_asso/:_id/add_evenement"  exact element={<AddEvenement />} />
+      <Route path="/myProfil"  exact element={<MyProfil />} />
     </Routes>
   </BrowserRouter>
 );

@@ -1,4 +1,3 @@
-
 import "../style/index.scss";
 import { useNavigate, } from "react-router";
 import React, { useEffect, useState } from "react";
@@ -43,92 +42,42 @@ import SendSharpIcon from '@mui/icons-material/SendSharp';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 
+export default function MyProfil(props) {
+    const connectedUser =sessionStorage.getItem('pseudo')
+    const connectedUserAvatar= sessionStorage.getItem('imgUrl')
+    const [connectedUserData,setConnectedUserData]=useState(null);
+    const [userPost,setUserPost]=useState(null)
 
-
-
-export default function ProfilAsso(props) {
-  const pseudo=sessionStorage.getItem("pseudoOnePost")
-  const connectedUser =sessionStorage.getItem('pseudo')
-  const connectedUserAvatar= sessionStorage.getItem('imgUrl')
-  const isVisitorStorage=sessionStorage.getItem("isVisitor")
-  const [userPostData,setuserPostdata]=useState(null)
-  const [isVisitor,setIsVisitor]=useState(null)
-  const [userPost, setUserPost]=useState(null);
-  const [connectedUserData,setConnectedUserData]=useState(null);
-  const [follow,setFollow]=useState({
-    follower:connectedUser,
-    followerAvatar:connectedUserAvatar
-  })
-  const [addFollower,setAddfollower]=useState()
-  const [displayLastFollow,setDisplaylastFollow]=useState({
-    justFollowAvatar:"",
-    isJustfollowed:false
-  })
-  
-  const getUserPostData=()=>{
-   
-    return axios
-    .get(`http://localhost:5000/users/${pseudo}`)
-    .then((res) => {
-      console.log(setuserPostdata(res.data)) 
-      ;
-    })
-    .catch((err) => console.error(err));
-  }
-  const getUserPostFromVisitor=()=>{
-  
-    return axios
-    .get(`http://localhost:5000/img/pseudo/${pseudo}`)
-    .then((res) => {
-      console.log(setUserPost(res.data)) 
-      sessionStorage.setItem("avatar",res.data[0].userPicture)
-      ;
-    })
-    .catch((err) => console.error(err));  
-};
-  useEffect(()=>{
-    getUserPostData();
-  },[])
-  useEffect(()=>{
-    setIsVisitor(isVisitorStorage)
-  })
-
-  const getConnectedUser=()=>{
-    return axios
-    .get(`http://localhost:5000/users/${connectedUser}`)
-    .then((res) => {
-      console.log(setConnectedUserData(res.data)) 
-      ;
-    })
-    .catch((err) => console.error(err));
-  }
-    
-      useEffect(() => {
-        getUserPostFromVisitor();
-        getConnectedUser(); 
-      }, []);
-
-    
-      
-      const AddFollower=()=>{
-        var canUseFollow = []
-        canUseFollow.push(follow)
-        for(let i=0;i < userPostData.followers.length;i++) {
-          canUseFollow.push(userPostData.followers[i])
-        }
-        setDisplaylastFollow({justFollowAvatar:connectedUserAvatar,isJustfollowed:true})
+    const getConnectedUser=()=>{
         return axios
-        .put(`http://localhost:5000/users/${pseudo}`,{followers:canUseFollow})
-        .then((response) => {
-          console.log(setAddfollower(response.data));
-         
+        .get(`http://localhost:5000/users/${connectedUser}`)
+        .then((res) => {
+        console.log(setConnectedUserData(res.data)) 
+        ;
         })
-        .catch((err) => console.error(err)); 
-      }
-     
-      const avatar=sessionStorage.getItem("avatar")
-  return (
-    <Container sx={{ py: 5 }} maxWidth="md" style={{background:"radial-gradient(#DF65CD69,#FBBC0580)"}}>
+        .catch((err) => console.error(err));
+    }
+    useEffect(()=>{
+        getConnectedUser()
+    },[])
+
+    const getUserPost=()=>{
+        return axios
+        .get(`http://localhost:5000/img/pseudo/${connectedUser}`)
+        .then((res) => {
+        console.log(setUserPost(res.data)) 
+        sessionStorage.setItem("avatar",res.data[0].userPicture)
+        ;
+        })
+        .catch((err) => console.error(err));  
+    };
+        
+    useEffect(() => {
+    getUserPost();
+    }, []);
+    
+    return (
+     <Container sx={{ py: 5 }} maxWidth="md" style={{background:"radial-gradient(#DF65CD69,#FBBC0580)"}}>
       
       <Grid
         container
@@ -139,7 +88,7 @@ export default function ProfilAsso(props) {
             <Grid xs={3} sx={{ height: "100%", display: "flex" }}>
               <Avatar
                 alt="Remy Sharp"
-                src={process.env.PUBLIC_URL + avatar}
+                src={process.env.PUBLIC_URL + connectedUserAvatar}
                 sx={{ width: 90, height: 90 }}
               />
             </Grid>
@@ -169,7 +118,6 @@ export default function ProfilAsso(props) {
                     label="Follow"
                     value="follow"
                     icon={<AddReactionOutlinedIcon fontSize="large"className="iconP" />}
-                    onClick={AddFollower}
                   />
                   <p classeName="p_icons"style={{ textAlign: "center",fontFamily:"poppins",fontSize:"18px" }}>Follow</p>
                 </Grid>
@@ -214,25 +162,8 @@ export default function ProfilAsso(props) {
 
         <h1 className="myTitle">My Followers</h1>
        <Grid container spacing={3}>
-        {displayLastFollow.isJustfollowed !==false?
-           
-           <Grid item xs={3}>
-              <a href="#"sx={{height: "100%",display: "flex", flexDirection: "column",justifyContent: "center",
-              }}
-              >
-                <Avatar
-                  src={process.env.PUBLIC_URL + displayLastFollow.justFollowAvatar}
-                  sx={{ width: 60, height: 60 }}
-                />
-              </a>
-            </Grid>
-            
-            :
-            console.log("no use tricks")
-          }
-          {userPostData!==null?
-            userPostData.followers.map((foll) => (
-           
+          {connectedUserData!==null?
+            connectedUserData.followers.map((foll) => (
             <Grid item xs={3}>
               <a href="#"sx={{height: "100%",display: "flex", flexDirection: "column",justifyContent: "center",
            }}
@@ -250,8 +181,8 @@ export default function ProfilAsso(props) {
           </Grid>
 
         <h1 className="myTitle">My events</h1>
-        <Grid container spacing={4}>
-          {userPost !== null?
+        <Grid container spacing={4}>       
+          {userPost!==null?
             userPost.map((event) => (
             <Grid item  xs={4} >
               <Card
@@ -283,7 +214,7 @@ export default function ProfilAsso(props) {
             </Grid>
           ))
           :
-          console.log("toujours pas bon")
+          console.log("pas encore ok")
         }
         </Grid>
         <React.Fragment>
@@ -303,7 +234,7 @@ export default function ProfilAsso(props) {
           <Box sx={{ flexGrow: 1 }} />
           <IconButton color="inherit">
               <button  style={{border:"none",background:"none"}} >
-              <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + connectedUserAvatar}/> 
+                <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + connectedUserAvatar}/> 
               </button> 
           </IconButton>
         </Toolbar>

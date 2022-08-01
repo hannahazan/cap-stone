@@ -153,8 +153,6 @@ const AddEvenement=()=>{
     return(
         <div className="events-container">
       <div className="events-header" >
-        <p>{testPseudo}</p>
-        <p>{testIsVisitor}</p>
         <img className="img-logo" src={logo} alt="Logo"  />
       </div>
       <div className="event-form-container">

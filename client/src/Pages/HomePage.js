@@ -81,8 +81,7 @@ function HomePage() {
       return axios
         .get("http://localhost:5000/img")
         .then((res) => {
-          console.log(setAllPosts(res.data))
-          
+          console.log(setAllPosts(res.data))  
           ;
         })
         .catch((err) => console.error(err));
@@ -109,9 +108,7 @@ function HomePage() {
           else{
             console.log("pas encore")
           }
-     }
-
-    
+     } 
      useEffect(() => {
       getPosts();
       getUser() 
@@ -120,6 +117,13 @@ function HomePage() {
      useEffect(()=>{
       getAllPostofOne()
      })
+
+     //permet de se rendre sur le profil de l'utilisateur connecté
+      const ReachConnecteduserProfil=()=>{
+
+          navigate("/myProfil")
+      }
+
     //ajoute un commentaire au post dans la base de donnée
     const onSubmitComment=()=>{
       var canUseComment=[]
@@ -139,10 +143,6 @@ function HomePage() {
           })
           .catch((err) => console.error(err));  
     }
-
-    
-    
-    
 
    //fonctions qui prennent en charge l'expend des cards, natif MUI
     const ExpandMore = styled((props) => {
@@ -207,7 +207,7 @@ function HomePage() {
           <FavoriteIcon  />
         </IconButton>
         <button style={{border:"none",background:"none"}} onClick={()=>{setUpgradeComment({imgOnePost:img.pictureName,
-        commentsOnePost:img.comments, likeOnePost:img.like
+        commentsOnePost:img.comments
         })}}>
           <IconButton aria-label="share" onClick={handleOpen}>
             <ChatBubbleOutlineRoundedIcon />
@@ -247,7 +247,7 @@ function HomePage() {
           {img.comments.map(comment=>{
             return(
               <div>
-              <Typography paragraph>{comment}</Typography>
+              <Typography paragraph> {comment}</Typography>
               </div>
             )
           }) 
@@ -277,7 +277,7 @@ function HomePage() {
           </Link>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton color="inherit">
-              <button  style={{border:"none",background:"none"}} >
+              <button  style={{border:"none",background:"none"}} onClick={ReachConnecteduserProfil}>
               <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + user.imgProfilUrl}/> 
               </button> 
           </IconButton>
