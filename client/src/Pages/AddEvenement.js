@@ -63,18 +63,20 @@ const AddEvenement=()=>{
     "December"
   ]
   var month =""
-  for(let i=0;i<tabMonth.length;i++){
-    if(i===Month)
+  for(let j=0;j<tabMonth.length;j++){
+    if(j===Month)
     {
-      month+=tabMonth[i]
+      month+=tabMonth[j]
       console.log(month)
       break
     }
     else(
       console.log("not the good Month")
     )
-    var postDate= today+" "+day+"."+month+"."+Year
+    
   }
+  var postDate= today+" "+day+"."+month+"."+Year
+    console.log(postDate)
 //******** */
     
 //récupère le pseudo de l'utilisateur pour l'utiliser dans un fetch get lorsque l'on arrive sur la page
@@ -124,6 +126,7 @@ const AddEvenement=()=>{
       data.append('userPicture',user.imgProfilUrl)
       data.append('isAssociation',user.isAssociation)
       data.append('datePost',postDate)
+      data.append('sortCompare',Date.now())
 //***** */
 
 //permet de passer outre le regarchement des pages et de stocker des infos qui pourront être réutiliser dans 

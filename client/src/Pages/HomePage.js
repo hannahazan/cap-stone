@@ -81,8 +81,8 @@ function HomePage() {
       return axios
         .get("http://localhost:5000/img")
         .then((res) => {
-          console.log(setAllPosts(res.data))  
-          ;
+          console.log(setAllPosts(res.data));
+          
         })
         .catch((err) => console.error(err));
     };
@@ -105,8 +105,11 @@ function HomePage() {
           if (onePost.isVisitor===true){
               navigate("/profil_asso/:_id/")
           }
+          else if(onePost.isVisitor===false){
+            navigate("/ok/myProfil")
+          }
           else{
-            console.log("pas encore")
+            console.log("peut être")
           }
      } 
      useEffect(() => {
@@ -121,7 +124,7 @@ function HomePage() {
      //permet de se rendre sur le profil de l'utilisateur connecté
       const ReachConnecteduserProfil=()=>{
 
-          navigate("/myProfil")
+          navigate("/ok/myProfil")
       }
 
     //ajoute un commentaire au post dans la base de donnée
@@ -143,7 +146,7 @@ function HomePage() {
           })
           .catch((err) => console.error(err));  
     }
-
+    
    //fonctions qui prennent en charge l'expend des cards, natif MUI
     const ExpandMore = styled((props) => {
       const { expand, ...other } = props;
@@ -163,19 +166,20 @@ function HomePage() {
     const handleOpen = () => {setOpen(true)
     };
     const handleClose = () => setOpen(false);
-    
+    var postSort=allPosts.sort(function(a,b){return(b.sortCompare - a.sortCompare)})
+          console.log(postSort)
   return (
     
     <div>
      {/*affichage des posts (img dans ma base de donnée)*/}
-     {allPosts.map((img)=>{
+     {postSort.map((img)=>{
       if(img.isAssociation===true){
       return(
       <Grid spacing={2}>
      <Card sx={{ py:5,maxWidth: 370,}}>
       <CardHeader
         avatar={
-              <button style={{border:"none",background:"none"}} onClick={(e)=>{setOnePost({pseudo:img.userPseudo,isVisitor:true})}}>
+              <button style={{border:"none",background:"none"}} onClick={img.userPicture!==user.imgProfilUrl?(e)=>{setOnePost({pseudo:img.userPseudo,isVisitor:true})}:(e)=>{setOnePost({pseudo:img.userPseudo,isVisitor:false})}}>
                       <Avatar alt="Cindy Baker" src={process.env.PUBLIC_URL + img.userPicture}/>  
               </button>       
         }   

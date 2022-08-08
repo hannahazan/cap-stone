@@ -7,34 +7,45 @@ import logo from "../img/CharyDeep_logo.png"
 
 export default function SignIn() {
    
-    const [getPseudo,setGetPseudo]=useState()
-    const [getPassword,setGetPassword]=useState()
+    const [getPseudo,setGetPseudo]=useState({
+      Pseudo:"",
+      isPseudo:false,
+    })
+    const [getPassword,setGetPassword]=useState({
+      Password:"",
+      isPassword:false,
+    })
     const [user,setGetUser]=useState([])
     const test=sessionStorage.getItem('gagner')
     const getUser = () => {
+      
         return axios
-          .get(`http://localhost:5000/users/${getPseudo}`)
+          .get(`http://localhost:5000/users/${getPseudo.Pseudo}`)
           .then((res) => {
             console.log(setGetUser(res.data))
             sessionStorage.setItem('pseudo',user.pseudo)
-            sessionStorage.setItem('imgUrl',user.imgProfilUrl)
-            navigateLog()
+            sessionStorage.setItem('imgUrl',user.imgProfilUrl) 
+             
           })
+          .then(()=>navigateLog() )
           .catch((err) => console.error(err));
+          
       };
+
       const navigate = useNavigate()
       
     
       const navigateLog=() => {
-        if(getPseudo===user.pseudo && getPassword===user.password){
+        
+        if(getPseudo.Pseudo===user.pseudo && getPassword.Password===user.password){
           console.log("hello")
           navigate("/homePage")
          }
+    
         }
 
-        const handleSubmit=(e) => {
-            e.preventDefault()
-              getUser();  
+        const handleSubmit=() => {
+             getUser()
             }
   return (
     <main className="signin-main">
@@ -53,10 +64,10 @@ export default function SignIn() {
                 email="email"
                 placeholder="Connectez-vous avec google"
             />
-            <input type="email" name="name" placeholder="pseudo" onChange={(e)=>setGetPseudo(e.target.value)} />
+            <input type="email" name="name" placeholder="pseudo" onChange={(e)=>setGetPseudo({Pseudo:e.target.value,isPseudo:true})} />
 
-            <input type="password" name="password" placeholder="Mot de passe" onChange={(e)=>setGetPassword(e.target.value)} />
-            <button type="submit" form="nameform" value="Submit" onClick={handleSubmit}>
+            <input type="password" name="password" placeholder="Mot de passe" onChange={(e)=>setGetPassword({Password:e.target.value,isPassword:true})} />
+            <button type="submit" form="nameform" value="Submit" onClick={()=>handleSubmit()}>
                 Connectez-vous
             </button>
             <Link to="/signUp"className="no-account">Pas de compte ? Inscrivez-vous</Link>

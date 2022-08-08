@@ -13,6 +13,7 @@ const imgSchema = new mongoose.Schema(
        userEmail:String,
        userPicture:String,
        isAssociation:Boolean,
+       sortCompare:Number,
    });
 
     

@@ -106,23 +106,7 @@ export default function MyProfil(props) {
                 xs={12}
                 sx={{ width: "100%", display: "flex", flexDirection: "row" }}
               >
-                <Grid
-                  xs={4}
-                  sx={{
-                    height: "50%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <BottomNavigationAction 
-                    label="Follow"
-                    value="follow"
-                    icon={<AddReactionOutlinedIcon fontSize="large"className="iconP" />}
-                  />
-                  <p classeName="p_icons"style={{ textAlign: "center",fontFamily:"poppins",fontSize:"18px" }}>Follow</p>
-                </Grid>
-
-                <Grid
+               <Grid
                   xs={4}
                   sx={{
                     height: "100%",

@@ -19,26 +19,18 @@ routerImg.get('/', function (req, res) {
     res.send(data)
   })
 })
-
+//find one post of one user
 routerImg.get('/:pictureName', function (req, res) {
   Image.findOne({ pictureName: req.params.pictureName }, (err, data) => {
     res.send(data)
   }
   )
 });
-//find all the post of the userPseudo speciefied
+//find all the post of one user
 routerImg.get('/pseudo/:userPseudo',function(req,res){
   Image.find({userPseudo:req.params.userPseudo}, 
   (err,data)=>{ console.log(data);
   res.send(data) });})
-
-
-/*routerImg.get('/name/:userPseudo', function (req, res) {
-  Image.findOne({ userPseudo: req.params.userPseudo }, (err, data) => {
-    res.send(data)
-  }
-  )
-});*/
 
 
 
@@ -53,8 +45,6 @@ routerImg.post("/", upload.single('file'), async (req, res) => {
       cb(null, file.fieldname + '-' + uniqueSuffix)
     },
   })
-  //console.log("body"+  req.body)
-  
   try {
     let myImage = new Image({
       title: req.body.title,
@@ -66,7 +56,8 @@ routerImg.post("/", upload.single('file'), async (req, res) => {
       userPseudo:req.body.userPseudo,
       userEmail:req.body.userEmail,
       userPicture:req.body.userPicture,
-      isAssociation:req.body.isAssociation
+      isAssociation:req.body.isAssociation,
+      sortCompare:req.body.sortCompare
     });
     await myImage.save();
     console.log(req.file)
