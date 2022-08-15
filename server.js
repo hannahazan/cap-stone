@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 import express from 'express';
 import cors from 'cors'
-import multer from 'multer';
 import routerUsers from './routes/users.js';
-
 import routerImg from './routes/img.js';
 const app = express()
 const port = 5000

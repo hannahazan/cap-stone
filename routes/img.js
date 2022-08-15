@@ -86,5 +86,25 @@ routerImg.put('/:pictureName',(req,res) => {
   })
 })
 
+routerImg.delete('/:userPseudo',(req,res) => {
+Image.findOneAndDelete({userPseudo:req.params.userPseudo},(err,data) => {
+     if(err)
+     {
+       res.sendStatus(404)
+     }
+     else
+     {
+       if (!data)
+       {
+         res.sendStatus(404)
+       }
+       else
+       {
+        res.send(data)
+       }
+     }
+   })
+ })
+
 
   export default routerImg

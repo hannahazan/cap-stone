@@ -80,10 +80,11 @@ export default function ProfilAsso(props) {
     return axios
     .get(`http://localhost:5000/img/pseudo/${pseudo}`)
     .then((res) => {
-      console.log(setUserPost(res.data)) 
-      sessionStorage.setItem("avatar",res.data[0].userPicture)
+      console.log(setUserPost(res.data.sort(function(a,b){return(b.sortCompare - a.sortCompare)}))) 
+      sessionStorage.setItem("avatar",res.data[0].userPicture) 
       ;
     })
+   
     .catch((err) => console.error(err));  
 };
   useEffect(()=>{
@@ -110,23 +111,24 @@ export default function ProfilAsso(props) {
 
     
       
-      const AddFollower=()=>{
-        var canUseFollow = []
-        canUseFollow.push(follow)
-        for(let i=0;i < userPostData.followers.length;i++) {
-          canUseFollow.push(userPostData.followers[i])
-        }
-        setDisplaylastFollow({justFollowAvatar:connectedUserAvatar,isJustfollowed:true})
-        return axios
-        .put(`http://localhost:5000/users/${pseudo}`,{followers:canUseFollow})
-        .then((response) => {
-          console.log(setAddfollower(response.data));
-         
-        })
-        .catch((err) => console.error(err)); 
-      }
-     
-      const avatar=sessionStorage.getItem("avatar")
+  const AddFollower=()=>{
+    var canUseFollow = []
+    canUseFollow.push(follow)
+    for(let i=0;i < userPostData.followers.length;i++) {
+      canUseFollow.push(userPostData.followers[i])
+    }
+    setDisplaylastFollow({justFollowAvatar:connectedUserAvatar,isJustfollowed:true})
+    return axios
+    .put(`http://localhost:5000/users/${pseudo}`,{followers:canUseFollow})
+    .then((response) => {
+      console.log(setAddfollower(response.data));
+      
+    })
+    .catch((err) => console.error(err)); 
+  }
+  
+  const avatar=sessionStorage.getItem("avatar")
+  
   return (
     <Container sx={{ py: 5 }} maxWidth="md" style={{background:"radial-gradient(#DF65CD69,#FBBC0580)"}}>
       
@@ -171,6 +173,7 @@ export default function ProfilAsso(props) {
                     icon={<AddReactionOutlinedIcon fontSize="large"className="iconP" />}
                     onClick={AddFollower}
                   />
+  
                   <p classeName="p_icons"style={{ textAlign: "center",fontFamily:"poppins",fontSize:"18px" }}>Follow</p>
                 </Grid>
 

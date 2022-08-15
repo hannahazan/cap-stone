@@ -64,8 +64,8 @@ export default function MyProfil(props) {
     const getUserPost=()=>{
         return axios
         .get(`http://localhost:5000/img/pseudo/${connectedUser}`)
-        .then((res) => {
-        console.log(setUserPost(res.data)) 
+        .then((res) => {console.log("ici")
+        setUserPost(res.data.sort(function(a,b){return(b.sortCompare - a.sortCompare)}))
         sessionStorage.setItem("avatar",res.data[0].userPicture)
         ;
         })
@@ -75,7 +75,7 @@ export default function MyProfil(props) {
     useEffect(() => {
     getUserPost();
     }, []);
-    
+  
     return (
      <Container sx={{ py: 5 }} maxWidth="md" style={{background:"radial-gradient(#DF65CD69,#FBBC0580)"}}>
       

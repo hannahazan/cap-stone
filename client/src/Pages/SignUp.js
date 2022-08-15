@@ -147,7 +147,7 @@ export default function Signup() {
                 component="label"
                 size="large"
               >
-                <input hidden accept="image/*" type="file" onChange={ updateImgProfile} />
+                <input hidden accept="image/*" type="file" onChange={updateImgProfile} />
                 <PhotoCamera />
               </IconButton>
             </Stack>

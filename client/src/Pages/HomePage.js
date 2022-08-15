@@ -58,7 +58,11 @@ function HomePage() {
 
     const [allPosts,setAllPosts]=useState([])
     const [user,setUser]=useState([])
-    const [upgradeComment,setUpgradeComment]=useState({})
+    const [upgradeComment,setUpgradeComment]=useState({
+      imgOnePost:"",
+      commentsOnePost:"",
+      justUpgradeComment:false,
+    })
     const [post, setPost] = React.useState(null);
     const [comment,setComment]=useState()
     //state qui permet de récupérer le pseudo d'un post en particulier pour l'envoyer vers la page profil
@@ -166,6 +170,7 @@ function HomePage() {
     const handleOpen = () => {setOpen(true)
     };
     const handleClose = () => setOpen(false);
+    //permet d'afficher le dernier post en premier
     var postSort=allPosts.sort(function(a,b){return(b.sortCompare - a.sortCompare)})
           console.log(postSort)
   return (
@@ -173,7 +178,7 @@ function HomePage() {
     <div>
      {/*affichage des posts (img dans ma base de donnée)*/}
      {postSort.map((img)=>{
-      if(img.isAssociation===true){
+      if(img.isAssociation === true){
       return(
       <Grid spacing={2}>
      <Card sx={{ py:5,maxWidth: 370,}}>
@@ -211,7 +216,7 @@ function HomePage() {
           <FavoriteIcon  />
         </IconButton>
         <button style={{border:"none",background:"none"}} onClick={()=>{setUpgradeComment({imgOnePost:img.pictureName,
-        commentsOnePost:img.comments
+        commentsOnePost:img.comments,justUpgradeComment:true
         })}}>
           <IconButton aria-label="share" onClick={handleOpen}>
             <ChatBubbleOutlineRoundedIcon />
@@ -248,7 +253,9 @@ function HomePage() {
         <CardContent>
           <Typography paragraph>{img.message}</Typography>
           <Typography paragraph>comments:</Typography>
-          {img.comments.map(comment=>{
+          {upgradeComment.justUpgradeComment !==false && upgradeComment.imgOnePost==img.pictureName?
+          <Typography paragraph>{comment}</Typography>:console.log("no use tricks")}
+           {img.comments.map(comment=>{
             return(
               <div>
               <Typography paragraph> {comment}</Typography>

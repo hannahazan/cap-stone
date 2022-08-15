@@ -72,8 +72,8 @@ routerUser.get('/:pseudo', function(req, res){
   })
 
 
-routerUser.delete('/:_id',(req,res) => {
- User.findOneAndDelete({_id:req.params._id},(err,data) => {
+routerUser.delete('/:pseudo',(req,res) => {
+ User.findOneAndDelete({pseudo:req.params.pseudo},(err,data) => {
     if(err)
     {
       res.sendStatus(404)
