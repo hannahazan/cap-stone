@@ -71,6 +71,23 @@ routerUser.get('/:pseudo', function(req, res){
     })
   })
 
+  routerUser.put('/pseudo/:pseudo',(req,res) => {
+    User.updateOne({pseudo:req.params.pseudo},{$pull:{followers:req.body.followers}},function(err,data){
+      console.log(req.body)
+      if(err){
+        res.sendStatus(404)
+      }
+      else
+      {
+        if (!data){
+            res.sendStatus(404)
+            }
+        else{
+            res.send(data)
+            }
+      }
+    })
+  })
 
 routerUser.delete('/:pseudo',(req,res) => {
  User.findOneAndDelete({pseudo:req.params.pseudo},(err,data) => {
@@ -91,5 +108,7 @@ routerUser.delete('/:pseudo',(req,res) => {
     }
   })
 })
+
+
 
 export default routerUser
